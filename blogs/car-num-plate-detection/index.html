@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html>
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta http-equiv="Accept-CH" content="DPR, Viewport-Width, Width">
+<link rel="icon" href=/images/logo.png type="image/gif">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      media="print" onload="this.media='all'" />
+<noscript>
+  <link
+          href="https://fonts.googleapis.com/css2?family=Alata&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+</noscript>
+
+
+<link rel="stylesheet" href="/css/font.css" media="all">
+
+
+
+<meta property="og:title" content="Car Number Plate Recognition using Tensorflow Model Garden" />
+<meta property="og:description" content="Object Detection Using TensorFlow and Roboflow Introduction Object detection is a crucial task in computer vision, allowing machines to identify and locate objects within images. In this tutorial, we’ll walk through the process of building an object detection model using TensorFlow and Roboflow, a platform that simplifies dataset management.
+Install TensorFlow Model Garden Package (tf-models-official) pip install -U tf-models-official Import Necessary Libraries import os import pprint import tempfile import numpy as np import tensorflow as tf import matplotlib." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sineeli.github.io/blogs/car-num-plate-detection/" /><meta property="article:section" content="blogs" />
+<meta property="article:published_time" content="2023-11-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-22T00:00:00+00:00" /><meta property="og:site_name" content="Siva Sravana Kumar Neeli" />
+
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Car Number Plate Recognition using Tensorflow Model Garden"/>
+<meta name="twitter:description" content="Object Detection Using TensorFlow and Roboflow Introduction Object detection is a crucial task in computer vision, allowing machines to identify and locate objects within images. In this tutorial, we’ll walk through the process of building an object detection model using TensorFlow and Roboflow, a platform that simplifies dataset management.
+Install TensorFlow Model Garden Package (tf-models-official) pip install -U tf-models-official Import Necessary Libraries import os import pprint import tempfile import numpy as np import tensorflow as tf import matplotlib."/>
+
+
+<link rel="stylesheet" href="/bootstrap-5/css/bootstrap.min.css" media="all"><link rel="stylesheet" href="/css/header.css" media="all">
+<link rel="stylesheet" href="/css/footer.css" media="all">
+
+
+<link rel="stylesheet" href="/css/theme.css" media="all">
+
+
+
+
+<style>
+    :root {
+        --text-color: #343a40;
+        --text-secondary-color: #6c757d;
+        --background-color: #eaedf0;
+        --secondary-background-color: #64ffda1a;
+        --primary-color: #007bff;
+        --secondary-color: #f8f9fa;
+
+         
+        --text-color-dark: #e4e6eb;
+        --text-secondary-color-dark: #b0b3b8;
+        --background-color-dark: #18191a;
+        --secondary-background-color-dark: #212529;
+        --primary-color-dark: #ffffff;
+        --secondary-color-dark: #212529;
+    }
+    body {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        text-align: left;
+    }
+
+    html {
+        background-color: var(--background-color) !important;
+    }
+
+    body::-webkit-scrollbar {
+        width: .5em;
+        height: .5em;
+        background-color: var(--background-color);
+    }
+    
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px var(--background-color);
+        border-radius: 1rem;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        border-radius: 1rem;
+        background-color: var(--secondary-color);
+        outline: 1px solid var(--background-color);
+    }
+
+    #search-content::-webkit-scrollbar {
+        width: .5em;
+        height: .1em;
+        background-color: var(--background-color);
+    }
+</style>
+
+<meta name="description" content="">
+<link rel="stylesheet" href="/css/single.css">
+
+
+<script defer src="/fontawesome-6/all-6.4.2.js"></script>
+
+  <title>
+Car Number Plate Recognition using Tensorflow Model Garden | Sravana Neeli
+
+  </title>
+</head>
+
+<body class="light">
+  
+  
+<script>
+    let localStorageValue = localStorage.getItem("pref-theme");
+    let mediaQuery = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    switch (localStorageValue) {
+        case "dark":
+            document.body.classList.add('dark');
+            break;
+        case "light":
+            document.body.classList.remove('dark');
+            break;
+        default:
+            if (mediaQuery) {
+                document.body.classList.add('dark');
+            }
+            break;
+    }
+</script>
+
+
+
+
+<script>
+    var prevScrollPos = window.pageYOffset;
+    window.addEventListener("scroll", function showHeaderOnScroll() {
+        let profileHeaderElem = document.getElementById("profileHeader");
+        let currentScrollPos = window.pageYOffset;
+        let resetHeaderStyle = false;
+        let showNavBarOnScrollUp =  true ;
+        let showNavBar = showNavBarOnScrollUp ? prevScrollPos > currentScrollPos : currentScrollPos > 0;
+        if (showNavBar) {
+            profileHeaderElem.classList.add("showHeaderOnTop");
+        } else {
+            resetHeaderStyle = true;
+        }
+        if(currentScrollPos === 0) {
+            resetHeaderStyle = true;
+        }
+        if(resetHeaderStyle) {
+            profileHeaderElem.classList.remove("showHeaderOnTop");
+        }
+        prevScrollPos = currentScrollPos;        
+    });
+</script>
+
+
+
+<header id="profileHeader">
+    <nav class="pt-3 navbar navbar-expand-lg animate">
+        <div class="container-fluid mx-xs-2 mx-sm-5 mx-md-5 mx-lg-5">
+            
+            <a class="navbar-brand primary-font text-wrap" href="/">
+                
+                Sravana Neeli&#39;s Profile
+                
+            </a>
+
+            
+                <div>
+                    <input id="search" autocomplete="off" class="form-control mr-sm-2 d-none d-md-block" placeholder='Search'
+                        aria-label="Search" oninput="searchOnChange(event)">
+                </div>
+            
+
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <svg aria-hidden="true" height="24" viewBox="0 0 16 16" version="1.1" width="24" data-view-component="true">
+                    <path fill-rule="evenodd" d="M1 2.75A.75.75 0 011.75 2h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 2.75zm0 5A.75.75 0 011.75 7h12.5a.75.75 0 110 1.5H1.75A.75.75 0 011 7.75zM1.75 12a.75.75 0 100 1.5h12.5a.75.75 0 100-1.5H1.75z"></path>
+                </svg>
+            </button>
+
+            
+            <div class="collapse navbar-collapse text-wrap primary-font" id="navbarContent">
+                <ul class="navbar-nav ms-auto text-center">
+                    
+                        <li class="nav-item navbar-text d-block d-md-none">
+                            <div class="nav-link">
+                                <input id="search" autocomplete="off" class="form-control mr-sm-2" placeholder='Search' aria-label="Search" oninput="searchOnChange(event)">
+                            </div>
+                        </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#about" aria-label="about">
+                            About Me
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#experience"
+                            aria-label="experience">
+                            Experience
+                        </a>
+                    </li>
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#education"
+                            aria-label="education">
+                            Education
+                        </a>
+                    </li>
+                    
+
+                    
+
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/#contact"
+                            aria-label="contact">
+                            Contact
+                        </a>
+                    </li>
+                    
+
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/blogs" title="Blog posts">
+                            
+                            Blog
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+                    <li class="nav-item navbar-text">
+                        <a class="nav-link" href="/gallery" title="Blog posts">
+                            
+                            Gallery
+                        </a>
+                    </li>
+                    
+                    
+
+                    
+                    <li class="nav-item navbar-text">
+                        
+                        <div class="text-center">
+                            <button id="theme-toggle">
+                                <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
+                                <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                            </button>
+                        </div>
+                    </li>
+                    
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+</header>
+<div id="content">
+<section id="single">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 col-md-12 col-lg-9">
+        <div class="pr-lg-4">
+          <div class="title mb-5">
+            <h1 class="text-center mb-4">Car Number Plate Recognition using Tensorflow Model Garden</h1>
+            <div class="text-center">
+              Sravana Neeli 
+              <small>|</small>
+              Nov 22, 2023
+
+              
+              <span id="readingTime">
+                min read
+              </span>
+              
+            </div>
+          </div>
+          
+          <div class="featured-image">
+            <img class="img-fluid mx-auto d-block" src="/images/Number-Plate-Detection.png" alt="Car Number Plate Recognition using Tensorflow Model Garden">
+          </div>
+          
+          <article class="page-content  p-2">
+          <h1 id="object-detection-using-tensorflow-and-roboflow">Object Detection Using TensorFlow and Roboflow</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Object detection is a crucial task in computer vision, allowing machines to identify and locate objects within images. In this tutorial, we’ll walk through the process of building an object detection model using TensorFlow and Roboflow, a platform that simplifies dataset management.</p>
+<h2 id="install-tensorflow-model-garden-package-tf-models-official">Install TensorFlow Model Garden Package (tf-models-official)</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install -U tf-models-official
+</span></span></code></pre></div><h2 id="import-necessary-libraries">Import Necessary Libraries</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> pprint
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> tempfile
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> tensorflow <span style="color:#66d9ef">as</span> tf
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#66d9ef">as</span> plt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> PIL <span style="color:#f92672">import</span> Image
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> six <span style="color:#f92672">import</span> BytesIO
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> urllib.request <span style="color:#f92672">import</span> urlopen
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.core <span style="color:#f92672">import</span> exp_factory
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.core <span style="color:#f92672">import</span> task_factory
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.core <span style="color:#f92672">import</span> train_lib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.vision.ops.preprocess_ops <span style="color:#f92672">import</span> resize_and_crop_image
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.vision.dataloaders.tf_example_decoder <span style="color:#f92672">import</span> TfExampleDecoder
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.vision.utils.object_detection <span style="color:#f92672">import</span> visualization_utils
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> official.vision.serving <span style="color:#f92672">import</span> export_saved_model_lib
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>pp <span style="color:#f92672">=</span> pprint<span style="color:#f92672">.</span>PrettyPrinter(indent<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>) <span style="color:#75715e"># Set Pretty Print Indentation</span>
+</span></span><span style="display:flex;"><span>print(tf<span style="color:#f92672">.</span>__version__) <span style="color:#75715e"># Check the version of tensorflow used</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">%</span>matplotlib inline
+</span></span></code></pre></div><h2 id="dataset-preparation">Dataset Preparation</h2>
+<p>We start by obtaining a dataset from Roboflow, which contains images and corresponding annotations. The dataset is then split into training and validation sets. We convert these datasets into the TFRecord format, a preferred format for TensorFlow.</p>
+<h3 id="download-the-car-number-plates-dataset">Download the Car Number Plates Dataset</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>robofolow_dataset <span style="color:#f92672">=</span> tempfile.mkdtemp<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>curl -L <span style="color:#e6db74">&#34;https://universe.roboflow.com/ds/DwPgoftzcM?key=2ruB4KoWty&#34;</span> &gt; /tmp/roboflow.zip 
+</span></span><span style="display:flex;"><span>unzip -q -o /tmp/roboflow.zip -d <span style="color:#f92672">{</span>robofolow_dataset<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>rm /tmp/roboflow.zip
+</span></span></code></pre></div><h3 id="generate-train-tfrecords">Generate Train TFRecords</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>OUTPUT_TF_RECORDS_DIR <span style="color:#f92672">=</span> tempfile.mkdtemp<span style="color:#f92672">()</span> 
+</span></span><span style="display:flex;"><span>TRAIN_DATA_DIR <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;{robofolow_dataset}/train&#39;</span>
+</span></span><span style="display:flex;"><span>TRAIN_ANNOTATION_FILE_DIR <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;{robofolow_dataset}/train/_annotations.coco.json&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output_tfrecord_train1 <span style="color:#f92672">=</span> os.path.join<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>    OUTPUT_TF_RECORDS_DIR, <span style="color:#e6db74">&#39;train&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Need to provide</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 1. image_dir: where images are present</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 2. object_annotations_file: where annotations are listed in json format</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 3. output_file_prefix: where to write output converted TFRecords files</span>
+</span></span><span style="display:flex;"><span>python -m official.vision.data.create_coco_tf_record --logtostderr <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --image_dir<span style="color:#f92672">={</span>TRAIN_DATA_DIR<span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --object_annotations_file<span style="color:#f92672">={</span>TRAIN_ANNOTATION_FILE_DIR<span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --output_file_prefix<span style="color:#f92672">={</span>output_tfrecord_train1<span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --num_shards<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span></code></pre></div><h3 id="generate-validation-tfrecords">Generate Validation TFRecords</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>VALID_DATA_DIR <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;{robofolow_dataset}/valid&#39;</span>
+</span></span><span style="display:flex;"><span>VALID_ANNOTATION_FILE_DIR <span style="color:#f92672">=</span> f<span style="color:#e6db74">&#39;{robofolow_dataset}/valid/_annotations.coco.json&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>output_tfrecord_valid1 <span style="color:#f92672">=</span> os.path.join<span style="color:#f92672">(</span>
+</span></span><span style="display:flex;"><span>    OUTPUT_TF_RECORDS_DIR, <span style="color:#e6db74">&#39;valid&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Need to provide</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 1. image_dir: where images are present</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 2. object_annotations_file: where annotations are listed in json format</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># 3. output_file_prefix: where to write output converted TFRecords files</span>
+</span></span><span style="display:flex;"><span>python -m official.vision.data.create_coco_tf_record --logtostderr <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --image_dir<span style="color:#f92672">={</span>VALID_DATA_DIR<span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --object_annotations_file<span style="color:#f92672">={</span>VALID_ANNOTATION_FILE_DIR<span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --output_file_prefix<span style="color:#f92672">={</span>output_tfrecord_valid1<span style="color:#f92672">}</span> <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>  --num_shards<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+</span></span></code></pre></div><h3 id="display-a-batch-of-train-dataset">Display a Batch of Train Dataset</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>tf_example_decoder <span style="color:#f92672">=</span> TfExampleDecoder()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">show_batch</span>(raw_records, num_of_examples):
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">20</span>))
+</span></span><span style="display:flex;"><span>    use_normalized_coordinates<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>    min_score_thresh <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.30</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i, serialized_example <span style="color:#f92672">in</span> enumerate(raw_records):
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, i <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        decoded_tensors <span style="color:#f92672">=</span> tf_example_decoder<span style="color:#f92672">.</span>decode(serialized_example)
+</span></span><span style="display:flex;"><span>        image <span style="color:#f92672">=</span> decoded_tensors[<span style="color:#e6db74">&#39;image&#39;</span>]<span style="color:#f92672">.</span>numpy()<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;uint8&#39;</span>)
+</span></span><span style="display:flex;"><span>        scores <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>ones(shape<span style="color:#f92672">=</span>(len(decoded_tensors[<span style="color:#e6db74">&#39;groundtruth_boxes&#39;</span>])))
+</span></span><span style="display:flex;"><span>        visualization_utils<span style="color:#f92672">.</span>visualize_boxes_and_labels_on_image_array(
+</span></span><span style="display:flex;"><span>            image,
+</span></span><span style="display:flex;"><span>            decoded_tensors[<span style="color:#e6db74">&#39;groundtruth_boxes&#39;</span>]<span style="color:#f92672">.</span>numpy(),
+</span></span><span style="display:flex;"><span>            decoded_tensors[<span style="color:#e6db74">&#39;groundtruth_classes&#39;</span>]<span style="color:#f92672">.</span>numpy()<span style="color:#f92672">.</span>astype(<span style="color:#e6db74">&#39;int&#39;</span>),
+</span></span><span style="display:flex;"><span>            scores,
+</span></span><span style="display:flex;"><span>            category_index<span style="color:#f92672">=</span>category_index,
+</span></span><span style="display:flex;"><span>            use_normalized_coordinates<span style="color:#f92672">=</span>use_normalized_coordinates,
+</span></span><span style="display:flex;"><span>            max_boxes_to_draw<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>            min_score_thresh<span style="color:#f92672">=</span>min_score_thresh,
+</span></span><span style="display:flex;"><span>            agnostic_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>            instance_masks<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>            line_thickness<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>imshow(image)
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>axis(<span style="color:#e6db74">&#39;off&#39;</span>)
+</span></span><span style="display:flex;"><span>        plt<span style="color:#f92672">.</span>title(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;Image-</span><span style="color:#e6db74">{</span>i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>buffer_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>
+</span></span><span style="display:flex;"><span>num_of_examples <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>raw_records <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>TFRecordDataset(
+</span></span><span style="display:flex;"><span>       tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>glob(OUTPUT_TF_RECORDS_DIR <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;/train*&#39;</span>))<span style="color:#f92672">.</span>shuffle(
+</span></span><span style="display:flex;"><span>        buffer_size<span style="color:#f92672">=</span>buffer_size)<span style="color:#f92672">.</span>take(num_of_examples)
+</span></span><span style="display:flex;"><span>show_batch(raw_records, num_of_examples)
+</span></span></code></pre></div><h2 id="model-configuration">Model Configuration</h2>
+<p>For our object detection model, we choose the RetinaNet architecture with a ResNet backbone. We configure the model, specifying the number of classes, anchor sizes, and input dimensions. Transfer learning is employed by initializing the model with pre-trained weights.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>exp_config <span style="color:#f92672">=</span> exp_factory<span style="color:#f92672">.</span>get_exp_config(<span style="color:#e6db74">&#39;retinanet_resnetfpn_coco&#39;</span>)
+</span></span></code></pre></div><h3 id="download-the-resnet-50-backbone">Download the ResNet-50 Backbone</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ckpt_dir <span style="color:#f92672">=</span> tempfile.mkdtemp<span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>wget <span style="color:#e6db74">&#34;https://storage.googleapis.com/tf_model_garden/vision/retinanet/retinanet-resnet50fpn.tar.gz&#34;</span> -P <span style="color:#e6db74">&#34;/tmp/&#34;</span>
+</span></span><span style="display:flex;"><span>tar -xvzf <span style="color:#e6db74">&#34;/tmp/retinanet-resnet50fpn.tar.gz&#34;</span> -C <span style="color:#f92672">{</span>ckpt_dir<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>rm <span style="color:#e6db74">&#34;/tmp/retinanet-resnet50fpn.tar.gz&#34;</span>
+</span></span></code></pre></div><h3 id="training-configuration">Training Configuration</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>BATCH_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>epochs <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>IMG_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">640</span>
+</span></span><span style="display:flex;"><span>steps_per_epoch <span style="color:#f92672">=</span> NUM_TRAIN_EXAMPLES <span style="color:#f92672">//</span> BATCH_SIZE
+</span></span><span style="display:flex;"><span>validation_steps <span style="color:#f92672">=</span> NUM_VAL_EXAMPLES <span style="color:#f92672">//</span> BATCH_SIZE
+</span></span><span style="display:flex;"><span>num_train_steps <span style="color:#f92672">=</span> steps_per_epoch <span style="color:#f92672">*</span> epochs
+</span></span><span style="display:flex;"><span>warmup_steps <span style="color:#f92672">=</span> int(<span style="color:#ae81ff">0.1</span> <span style="color:#f92672">*</span> num_train_steps)
+</span></span><span style="display:flex;"><span>initial_learning_rate <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.01</span>
+</span></span><span style="display:flex;"><span>warmup_learning_rate <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> initial_learning_rate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Runtime configuration</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>runtime<span style="color:#f92672">.</span>mixed_precision_dtype <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;bfloat16&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># exp_config.runtime.num_gpus = 1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Task Level configuration</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>init_checkpoint <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(ckpt_dir, <span style="color:#e6db74">&#34;ckpt-33264&#34;</span>)
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>init_checkpoint_modules <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;backbone&#39;</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>freeze_backbone <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>annotation_file <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Model configuration</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>num_classes <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>anchor<span style="color:#f92672">.</span>anchor_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">4.0</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>anchor<span style="color:#f92672">.</span>aspect_ratios <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">1.0</span>, <span style="color:#ae81ff">1.5</span>, <span style="color:#ae81ff">2.0</span>, <span style="color:#ae81ff">2.5</span>, <span style="color:#ae81ff">3.0</span>, <span style="color:#ae81ff">4.0</span>, <span style="color:#ae81ff">5.0</span>]
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>model<span style="color:#f92672">.</span>input_size <span style="color:#f92672">=</span> [IMG_SIZE, IMG_SIZE, <span style="color:#ae81ff">3</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Train data configuration</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>train_data<span style="color:#f92672">.</span>input_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(OUTPUT_TF_RECORDS_DIR, <span style="color:#e6db74">&#39;train*&#39;</span>)
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>train_data<span style="color:#f92672">.</span>global_batch_size <span style="color:#f92672">=</span> BATCH_SIZE
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>train_data<span style="color:#f92672">.</span>dtype <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;float32&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Validation data configuration</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>validation_data<span style="color:#f92672">.</span>input_path <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(OUTPUT_TF_RECORDS_DIR, <span style="color:#e6db74">&#39;val*&#39;</span>)
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>train_data<span style="color:#f92672">.</span>global_batch_size <span style="color:#f92672">=</span> BATCH_SIZE
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>validation_data<span style="color:#f92672">.</span>dtype <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;float32&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Trainer configuration</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>checkpoint_interval <span style="color:#f92672">=</span> steps_per_epoch
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>optimizer_config<span style="color:#f92672">.</span>warmup<span style="color:#f92672">.</span>linear<span style="color:#f92672">.</span>warmup_steps <span style="color:#f92672">=</span> steps_per_epoch
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>optimizer_config<span style="color:#f92672">.</span>warmup<span style="color:#f92672">.</span>linear<span style="color:#f92672">.</span>warmup_learning_rate <span style="color:#f92672">=</span> warmup_learning_rate
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>optimizer_config<span style="color:#f92672">.</span>learning_rate<span style="color:#f92672">.</span>type <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;cosine&#39;</span>
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>optimizer_config<span style="color:#f92672">.</span>learning_rate<span style="color:#f92672">.</span>cosine<span style="color:#f92672">.</span>decay_steps <span style="color:#f92672">=</span> num_train_steps
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>optimizer_config<span style="color:#f92672">.</span>learning_rate<span style="color:#f92672">.</span>cosine<span style="color:#f92672">.</span>initial_learning_rate <span style="color:#f92672">=</span> initial_learning_rate
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>train_steps <span style="color:#f92672">=</span> num_train_steps
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>validation_steps <span style="color:#f92672">=</span> validation_steps
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>validation_interval <span style="color:#f92672">=</span> steps_per_epoch
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>steps_per_loop <span style="color:#f92672">=</span> steps_per_epoch
+</span></span><span style="display:flex;"><span>exp_config<span style="color:#f92672">.</span>trainer<span style="color:#f92672">.</span>summary_interval <span style="color:#f92672">=</span> steps_per_epoch
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>pp<span style="color:#f92672">.</span>pprint(exp_config<span style="color:#f92672">.</span>as_dict())
+</span></span></code></pre></div><pre tabindex="0"><code>{   &#39;runtime&#39;: {   &#39;all_reduce_alg&#39;: None,
+                   &#39;batchnorm_spatial_persistent&#39;: False,
+                   &#39;dataset_num_private_threads&#39;: None,
+                   &#39;default_shard_dim&#39;: -1,
+                   &#39;distribution_strategy&#39;: &#39;mirrored&#39;,
+                   &#39;enable_xla&#39;: False,
+                   &#39;gpu_thread_mode&#39;: None,
+                   &#39;loss_scale&#39;: None,
+                   &#39;mixed_precision_dtype&#39;: &#39;bfloat16&#39;,
+                   &#39;num_cores_per_replica&#39;: 1,
+                   &#39;num_gpus&#39;: 0,
+                   &#39;num_packs&#39;: 1,
+                   &#39;per_gpu_thread_count&#39;: 0,
+                   &#39;run_eagerly&#39;: False,
+                   &#39;task_index&#39;: -1,
+                   &#39;tpu&#39;: None,
+                   &#39;tpu_enable_xla_dynamic_padder&#39;: None,
+                   &#39;use_tpu_mp_strategy&#39;: False,
+                   &#39;worker_hosts&#39;: None},
+    &#39;task&#39;: {   &#39;allow_image_summary&#39;: False,
+                &#39;annotation_file&#39;: &#39;&#39;,
+                &#39;differential_privacy_config&#39;: None,
+                &#39;export_config&#39;: {   &#39;cast_detection_classes_to_float&#39;: False,
+                                     &#39;cast_num_detections_to_float&#39;: False,
+                                     &#39;output_intermediate_features&#39;: False,
+                                     &#39;output_normalized_coordinates&#39;: False},
+                &#39;freeze_backbone&#39;: True,
+                &#39;init_checkpoint&#39;: &#39;/tmp/tmp4sm_f79o/ckpt-33264&#39;,
+                &#39;init_checkpoint_modules&#39;: &#39;backbone&#39;,
+                &#39;losses&#39;: {   &#39;box_loss_weight&#39;: 50,
+                              &#39;focal_loss_alpha&#39;: 0.25,
+                              &#39;focal_loss_gamma&#39;: 1.5,
+                              &#39;huber_loss_delta&#39;: 0.1,
+                              &#39;l2_weight_decay&#39;: 0.0001,
+                              &#39;loss_weight&#39;: 1.0},
+                &#39;max_num_eval_detections&#39;: 100,
+                &#39;model&#39;: {   &#39;anchor&#39;: {   &#39;anchor_size&#39;: 4.0,
+                                           &#39;aspect_ratios&#39;: [   0.5,
+                                                                1.0,
+                                                                1.5,
+                                                                2.0,
+                                                                2.5,
+                                                                3.0,
+                                                                4.0,
+                                                                5.0],
+                                           &#39;num_scales&#39;: 3},
+                             &#39;backbone&#39;: {   &#39;resnet&#39;: {   &#39;bn_trainable&#39;: True,
+                                                           &#39;depth_multiplier&#39;: 1.0,
+                                                           &#39;model_id&#39;: 50,
+                                                           &#39;replace_stem_max_pool&#39;: False,
+                                                           &#39;resnetd_shortcut&#39;: False,
+                                                           &#39;scale_stem&#39;: True,
+                                                           &#39;se_ratio&#39;: 0.0,
+                                                           &#39;stem_type&#39;: &#39;v0&#39;,
+                                                           &#39;stochastic_depth_drop_rate&#39;: 0.0},
+                                             &#39;type&#39;: &#39;resnet&#39;},
+                             &#39;decoder&#39;: {   &#39;fpn&#39;: {   &#39;fusion_type&#39;: &#39;sum&#39;,
+                                                       &#39;num_filters&#39;: 256,
+                                                       &#39;use_keras_layer&#39;: False,
+                                                       &#39;use_separable_conv&#39;: False},
+                                            &#39;type&#39;: &#39;fpn&#39;},
+                             &#39;detection_generator&#39;: {   &#39;apply_nms&#39;: True,
+                                                        &#39;max_num_detections&#39;: 100,
+                                                        &#39;nms_iou_threshold&#39;: 0.5,
+                                                        &#39;nms_version&#39;: &#39;v2&#39;,
+                                                        &#39;pre_nms_score_threshold&#39;: 0.05,
+                                                        &#39;pre_nms_top_k&#39;: 5000,
+                                                        &#39;return_decoded&#39;: None,
+                                                        &#39;soft_nms_sigma&#39;: None,
+                                                        &#39;tflite_post_processing&#39;: {   &#39;max_classes_per_detection&#39;: 5,
+                                                                                      &#39;max_detections&#39;: 200,
+                                                                                      &#39;nms_iou_threshold&#39;: 0.5,
+                                                                                      &#39;nms_score_threshold&#39;: 0.1,
+                                                                                      &#39;normalize_anchor_coordinates&#39;: False,
+                                                                                      &#39;omit_nms&#39;: False,
+                                                                                      &#39;use_regular_nms&#39;: False},
+                                                        &#39;use_class_agnostic_nms&#39;: False,
+                                                        &#39;use_cpu_nms&#39;: False},
+                             &#39;head&#39;: {   &#39;attribute_heads&#39;: [],
+                                         &#39;num_convs&#39;: 4,
+                                         &#39;num_filters&#39;: 256,
+                                         &#39;share_classification_heads&#39;: False,
+                                         &#39;use_separable_conv&#39;: False},
+                             &#39;input_size&#39;: [640, 640, 3],
+                             &#39;max_level&#39;: 7,
+                             &#39;min_level&#39;: 3,
+                             &#39;norm_activation&#39;: {   &#39;activation&#39;: &#39;relu&#39;,
+                                                    &#39;norm_epsilon&#39;: 0.001,
+                                                    &#39;norm_momentum&#39;: 0.99,
+                                                    &#39;use_sync_bn&#39;: False},
+                             &#39;num_classes&#39;: 3},
+                &#39;name&#39;: None,
+                &#39;per_category_metrics&#39;: False,
+                &#39;train_data&#39;: {   &#39;apply_tf_data_service_before_batching&#39;: False,
+                                  &#39;autotune_algorithm&#39;: None,
+                                  &#39;block_length&#39;: 1,
+                                  &#39;cache&#39;: False,
+                                  &#39;cycle_length&#39;: None,
+                                  &#39;decoder&#39;: {   &#39;simple_decoder&#39;: {   &#39;attribute_names&#39;: [   ],
+                                                                       &#39;mask_binarize_threshold&#39;: None,
+                                                                       &#39;regenerate_source_id&#39;: False},
+                                                 &#39;type&#39;: &#39;simple_decoder&#39;},
+                                  &#39;deterministic&#39;: None,
+                                  &#39;drop_remainder&#39;: True,
+                                  &#39;dtype&#39;: &#39;float32&#39;,
+                                  &#39;enable_shared_tf_data_service_between_parallel_trainers&#39;: False,
+                                  &#39;enable_tf_data_service&#39;: False,
+                                  &#39;file_type&#39;: &#39;tfrecord&#39;,
+                                  &#39;global_batch_size&#39;: 8,
+                                  &#39;input_path&#39;: &#39;/tmp/tmpd67ub1pe/train*&#39;,
+                                  &#39;is_training&#39;: True,
+                                  &#39;parser&#39;: {   &#39;aug_policy&#39;: None,
+                                                &#39;aug_rand_hflip&#39;: True,
+                                                &#39;aug_scale_max&#39;: 1.2,
+                                                &#39;aug_scale_min&#39;: 0.8,
+                                                &#39;aug_type&#39;: None,
+                                                &#39;match_threshold&#39;: 0.5,
+                                                &#39;max_num_instances&#39;: 100,
+                                                &#39;num_channels&#39;: 3,
+                                                &#39;skip_crowd_during_training&#39;: True,
+                                                &#39;unmatched_threshold&#39;: 0.5},
+                                  &#39;prefetch_buffer_size&#39;: None,
+                                  &#39;seed&#39;: None,
+                                  &#39;sharding&#39;: True,
+                                  &#39;shuffle_buffer_size&#39;: 10000,
+                                  &#39;tf_data_service_address&#39;: None,
+                                  &#39;tf_data_service_job_name&#39;: None,
+                                  &#39;tfds_as_supervised&#39;: False,
+                                  &#39;tfds_data_dir&#39;: &#39;&#39;,
+                                  &#39;tfds_name&#39;: &#39;&#39;,
+                                  &#39;tfds_skip_decoding_feature&#39;: &#39;&#39;,
+                                  &#39;tfds_split&#39;: &#39;&#39;,
+                                  &#39;trainer_id&#39;: None,
+                                  &#39;weights&#39;: None},
+                &#39;use_coco_metrics&#39;: True,
+                &#39;use_wod_metrics&#39;: False,
+                &#39;validation_data&#39;: {   &#39;apply_tf_data_service_before_batching&#39;: False,
+                                       &#39;autotune_algorithm&#39;: None,
+                                       &#39;block_length&#39;: 1,
+                                       &#39;cache&#39;: False,
+                                       &#39;cycle_length&#39;: None,
+                                       &#39;decoder&#39;: {   &#39;simple_decoder&#39;: {   &#39;attribute_names&#39;: [   ],
+                                                                            &#39;mask_binarize_threshold&#39;: None,
+                                                                            &#39;regenerate_source_id&#39;: False},
+                                                      &#39;type&#39;: &#39;simple_decoder&#39;},
+                                       &#39;deterministic&#39;: None,
+                                       &#39;drop_remainder&#39;: True,
+                                       &#39;dtype&#39;: &#39;float32&#39;,
+                                       &#39;enable_shared_tf_data_service_between_parallel_trainers&#39;: False,
+                                       &#39;enable_tf_data_service&#39;: False,
+                                       &#39;file_type&#39;: &#39;tfrecord&#39;,
+                                       &#39;global_batch_size&#39;: 8,
+                                       &#39;input_path&#39;: &#39;/tmp/tmpd67ub1pe/val*&#39;,
+                                       &#39;is_training&#39;: False,
+                                       &#39;parser&#39;: {   &#39;aug_policy&#39;: None,
+                                                     &#39;aug_rand_hflip&#39;: False,
+                                                     &#39;aug_scale_max&#39;: 1.0,
+                                                     &#39;aug_scale_min&#39;: 1.0,
+                                                     &#39;aug_type&#39;: None,
+                                                     &#39;match_threshold&#39;: 0.5,
+                                                     &#39;max_num_instances&#39;: 100,
+                                                     &#39;num_channels&#39;: 3,
+                                                     &#39;skip_crowd_during_training&#39;: True,
+                                                     &#39;unmatched_threshold&#39;: 0.5},
+                                       &#39;prefetch_buffer_size&#39;: None,
+                                       &#39;seed&#39;: None,
+                                       &#39;sharding&#39;: True,
+                                       &#39;shuffle_buffer_size&#39;: 10000,
+                                       &#39;tf_data_service_address&#39;: None,
+                                       &#39;tf_data_service_job_name&#39;: None,
+                                       &#39;tfds_as_supervised&#39;: False,
+                                       &#39;tfds_data_dir&#39;: &#39;&#39;,
+                                       &#39;tfds_name&#39;: &#39;&#39;,
+                                       &#39;tfds_skip_decoding_feature&#39;: &#39;&#39;,
+                                       &#39;tfds_split&#39;: &#39;&#39;,
+                                       &#39;trainer_id&#39;: None,
+                                       &#39;weights&#39;: None}},
+    &#39;trainer&#39;: {   &#39;allow_tpu_summary&#39;: False,
+                   &#39;best_checkpoint_eval_metric&#39;: &#39;&#39;,
+                   &#39;best_checkpoint_export_subdir&#39;: &#39;&#39;,
+                   &#39;best_checkpoint_metric_comp&#39;: &#39;higher&#39;,
+                   &#39;checkpoint_interval&#39;: 122,
+                   &#39;continuous_eval_timeout&#39;: 3600,
+                   &#39;eval_tf_function&#39;: True,
+                   &#39;eval_tf_while_loop&#39;: False,
+                   &#39;loss_upper_bound&#39;: 1000000.0,
+                   &#39;max_to_keep&#39;: 5,
+                   &#39;optimizer_config&#39;: {   &#39;ema&#39;: None,
+                                           &#39;learning_rate&#39;: {   &#39;cosine&#39;: {   &#39;alpha&#39;: 0.0,
+                                                                              &#39;decay_steps&#39;: 610,
+                                                                              &#39;initial_learning_rate&#39;: 0.01,
+                                                                              &#39;name&#39;: &#39;CosineDecay&#39;,
+                                                                              &#39;offset&#39;: 0},
+                                                                &#39;type&#39;: &#39;cosine&#39;},
+                                           &#39;optimizer&#39;: {   &#39;sgd&#39;: {   &#39;clipnorm&#39;: None,
+                                                                       &#39;clipvalue&#39;: None,
+                                                                       &#39;decay&#39;: 0.0,
+                                                                       &#39;global_clipnorm&#39;: None,
+                                                                       &#39;momentum&#39;: 0.9,
+                                                                       &#39;name&#39;: &#39;SGD&#39;,
+                                                                       &#39;nesterov&#39;: False},
+                                                            &#39;type&#39;: &#39;sgd&#39;},
+                                           &#39;warmup&#39;: {   &#39;linear&#39;: {   &#39;name&#39;: &#39;linear&#39;,
+                                                                       &#39;warmup_learning_rate&#39;: 0.005,
+                                                                       &#39;warmup_steps&#39;: 122},
+                                                         &#39;type&#39;: &#39;linear&#39;}},
+                   &#39;preemption_on_demand_checkpoint&#39;: True,
+                   &#39;recovery_begin_steps&#39;: 0,
+                   &#39;recovery_max_trials&#39;: 0,
+                   &#39;steps_per_loop&#39;: 122,
+                   &#39;summary_interval&#39;: 122,
+                   &#39;train_steps&#39;: 610,
+                   &#39;train_tf_function&#39;: True,
+                   &#39;train_tf_while_loop&#39;: True,
+                   &#39;validation_interval&#39;: 122,
+                   &#39;validation_steps&#39;: 8,
+                   &#39;validation_summary_subdir&#39;: &#39;validation&#39;}}
+</code></pre><h2 id="training">Training</h2>
+<p>Create the Task object (tfm.core.base_task.Task) from the config_definitions.TaskConfig.</p>
+<p>The Task object has all the methods necessary for building the dataset, building the model, and running training &amp; evaluation. These methods are driven by tfm.core.train_lib.run_experiment.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model_dir <span style="color:#f92672">=</span> tempfile<span style="color:#f92672">.</span>mkdtemp()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> distribution_strategy<span style="color:#f92672">.</span>scope():
+</span></span><span style="display:flex;"><span>    task <span style="color:#f92672">=</span> task_factory<span style="color:#f92672">.</span>get_task(exp_config<span style="color:#f92672">.</span>task, logging_dir<span style="color:#f92672">=</span>model_dir)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>model, eval_logs <span style="color:#f92672">=</span> train_lib<span style="color:#f92672">.</span>run_experiment(
+</span></span><span style="display:flex;"><span>    distribution_strategy<span style="color:#f92672">=</span>distribution_strategy,
+</span></span><span style="display:flex;"><span>    task<span style="color:#f92672">=</span>task,
+</span></span><span style="display:flex;"><span>    mode<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;train_and_eval&#39;</span>,
+</span></span><span style="display:flex;"><span>    params<span style="color:#f92672">=</span>exp_config,
+</span></span><span style="display:flex;"><span>    model_dir<span style="color:#f92672">=</span>model_dir)
+</span></span></code></pre></div><h2 id="exporting-the-model">Exporting the Model</h2>
+<p>Once satisfied with the model’s performance, we export it for serving using TensorFlow’s SavedModel format. This step prepares the model for deployment in various applications.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>export_dir <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;./model/&#39;</span>
+</span></span><span style="display:flex;"><span>export_saved_model_lib<span style="color:#f92672">.</span>export_inference_graph(
+</span></span><span style="display:flex;"><span>    input_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;image_tensor&#39;</span>,
+</span></span><span style="display:flex;"><span>    batch_size<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>,
+</span></span><span style="display:flex;"><span>    input_image_size<span style="color:#f92672">=</span>[IMG_SIZE, IMG_SIZE],
+</span></span><span style="display:flex;"><span>    params<span style="color:#f92672">=</span>exp_config,
+</span></span><span style="display:flex;"><span>    checkpoint_path<span style="color:#f92672">=</span>tf<span style="color:#f92672">.</span>train<span style="color:#f92672">.</span>latest_checkpoint(model_dir),
+</span></span><span style="display:flex;"><span>    export_dir<span style="color:#f92672">=</span>export_dir)
+</span></span></code></pre></div><h2 id="inference-on-new-images">Inference on New Images</h2>
+<p>We demonstrate how to use the trained model for inference on new images. The model identifies objects in these images, and we visualize the results, showcasing the model’s ability to detect and classify objects accurately.</p>
+<h3 id="load-the-exported-model">Load the exported model</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>imported <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>saved_model<span style="color:#f92672">.</span>load(export_dir)
+</span></span><span style="display:flex;"><span>model_fn <span style="color:#f92672">=</span> imported<span style="color:#f92672">.</span>signatures[<span style="color:#e6db74">&#39;serving_default&#39;</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">load_image_into_numpy_array</span>(path):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Load an image from file into a numpy array.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Puts image into numpy array to feed into tensorflow graph.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Note that by convention we put it into a numpy array with shape
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    (height, width, channels), where channels=3 for RGB.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Args:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        path: the file path to the image
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    Returns:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        uint8 numpy array with shape (img_height, img_width, 3)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    &#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    image <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span>(path<span style="color:#f92672">.</span>startswith(<span style="color:#e6db74">&#39;http&#39;</span>)):
+</span></span><span style="display:flex;"><span>        response <span style="color:#f92672">=</span> urlopen(path)
+</span></span><span style="display:flex;"><span>        image_data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>        image_data <span style="color:#f92672">=</span> BytesIO(image_data)
+</span></span><span style="display:flex;"><span>        image <span style="color:#f92672">=</span> Image<span style="color:#f92672">.</span>open(image_data)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        image_data <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>GFile(path, <span style="color:#e6db74">&#39;rb&#39;</span>)<span style="color:#f92672">.</span>read()
+</span></span><span style="display:flex;"><span>        image <span style="color:#f92672">=</span> Image<span style="color:#f92672">.</span>open(BytesIO(image_data))
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    (im_width, im_height) <span style="color:#f92672">=</span> image<span style="color:#f92672">.</span>size
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array(image<span style="color:#f92672">.</span>getdata())<span style="color:#f92672">.</span>reshape(
+</span></span><span style="display:flex;"><span>        (<span style="color:#ae81ff">1</span>, im_height, im_width, <span style="color:#ae81ff">3</span>))<span style="color:#f92672">.</span>astype(np<span style="color:#f92672">.</span>uint8)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">build_inputs_for_object_detection</span>(image, input_image_size):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;Builds Object Detection model inputs for serving.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    image, _ <span style="color:#f92672">=</span> resize_and_crop_image(
+</span></span><span style="display:flex;"><span>        image,
+</span></span><span style="display:flex;"><span>        input_image_size,
+</span></span><span style="display:flex;"><span>        padded_size<span style="color:#f92672">=</span>input_image_size,
+</span></span><span style="display:flex;"><span>        aug_scale_min<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>,
+</span></span><span style="display:flex;"><span>        aug_scale_max<span style="color:#f92672">=</span><span style="color:#ae81ff">1.0</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> image
+</span></span></code></pre></div><h3 id="inference-on-validation-images">Inference on Validation Images</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>input_image_size <span style="color:#f92672">=</span> (IMG_SIZE, IMG_SIZE)
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>figure(figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">20</span>, <span style="color:#ae81ff">20</span>))
+</span></span><span style="display:flex;"><span>min_score_thresh <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.4</span> <span style="color:#75715e"># Change minimum score for threshold to see all bounding boxes confidences.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>val_ds <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>data<span style="color:#f92672">.</span>TFRecordDataset(
+</span></span><span style="display:flex;"><span>    tf<span style="color:#f92672">.</span>io<span style="color:#f92672">.</span>gfile<span style="color:#f92672">.</span>glob(exp_config<span style="color:#f92672">.</span>task<span style="color:#f92672">.</span>validation_data<span style="color:#f92672">.</span>input_path <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;*&#39;</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> i, serialized_example <span style="color:#f92672">in</span> enumerate(val_ds<span style="color:#f92672">.</span>shuffle(<span style="color:#ae81ff">20</span>)<span style="color:#f92672">.</span>take(<span style="color:#ae81ff">3</span>)):
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>subplot(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">3</span>, i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    decoded_tensors <span style="color:#f92672">=</span> tf_example_decoder<span style="color:#f92672">.</span>decode(serialized_example)
+</span></span><span style="display:flex;"><span>    image <span style="color:#f92672">=</span> build_inputs_for_object_detection(decoded_tensors[<span style="color:#e6db74">&#39;image&#39;</span>], input_image_size)
+</span></span><span style="display:flex;"><span>    image <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>expand_dims(image, axis<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>    image <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>cast(image, dtype <span style="color:#f92672">=</span> tf<span style="color:#f92672">.</span>uint8)
+</span></span><span style="display:flex;"><span>    image_np <span style="color:#f92672">=</span> image[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>numpy()
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> model_fn(image)
+</span></span><span style="display:flex;"><span>    visualization_utils<span style="color:#f92672">.</span>visualize_boxes_and_labels_on_image_array(
+</span></span><span style="display:flex;"><span>        image_np,
+</span></span><span style="display:flex;"><span>        result[<span style="color:#e6db74">&#39;detection_boxes&#39;</span>][<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>numpy(),
+</span></span><span style="display:flex;"><span>        result[<span style="color:#e6db74">&#39;detection_classes&#39;</span>][<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>numpy()<span style="color:#f92672">.</span>astype(int),
+</span></span><span style="display:flex;"><span>        result[<span style="color:#e6db74">&#39;detection_scores&#39;</span>][<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>numpy(),
+</span></span><span style="display:flex;"><span>        category_index<span style="color:#f92672">=</span>category_index,
+</span></span><span style="display:flex;"><span>        use_normalized_coordinates<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>        max_boxes_to_draw<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>,
+</span></span><span style="display:flex;"><span>        min_score_thresh<span style="color:#f92672">=</span>min_score_thresh,
+</span></span><span style="display:flex;"><span>        agnostic_mode<span style="color:#f92672">=</span><span style="color:#66d9ef">False</span>,
+</span></span><span style="display:flex;"><span>        instance_masks<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>,
+</span></span><span style="display:flex;"><span>        line_thickness<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>imshow(image_np)
+</span></span><span style="display:flex;"><span>    plt<span style="color:#f92672">.</span>axis(<span style="color:#e6db74">&#39;off&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>plt<span style="color:#f92672">.</span>show()
+</span></span></code></pre></div><h2 id="conclusion">Conclusion</h2>
+<p>In conclusion, this tutorial covered the end-to-end process of building an object detection model using TensorFlow and Roboflow. From dataset preparation to model configuration, training, and deployment, you now have a foundation to create your own custom object detection solutions.</p>
+
+          </article>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-3">
+        <div id="stickySideBar" class="sticky-sidebar">
+          
+          <aside class="toc">
+              <h5>
+                Table Of Contents
+              </h5>
+              <div class="toc-content">
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#install-tensorflow-model-garden-package-tf-models-official">Install TensorFlow Model Garden Package (tf-models-official)</a></li>
+    <li><a href="#import-necessary-libraries">Import Necessary Libraries</a></li>
+    <li><a href="#dataset-preparation">Dataset Preparation</a>
+      <ul>
+        <li><a href="#download-the-car-number-plates-dataset">Download the Car Number Plates Dataset</a></li>
+        <li><a href="#generate-train-tfrecords">Generate Train TFRecords</a></li>
+        <li><a href="#generate-validation-tfrecords">Generate Validation TFRecords</a></li>
+        <li><a href="#display-a-batch-of-train-dataset">Display a Batch of Train Dataset</a></li>
+      </ul>
+    </li>
+    <li><a href="#model-configuration">Model Configuration</a>
+      <ul>
+        <li><a href="#download-the-resnet-50-backbone">Download the ResNet-50 Backbone</a></li>
+        <li><a href="#training-configuration">Training Configuration</a></li>
+      </ul>
+    </li>
+    <li><a href="#training">Training</a></li>
+    <li><a href="#exporting-the-model">Exporting the Model</a></li>
+    <li><a href="#inference-on-new-images">Inference on New Images</a>
+      <ul>
+        <li><a href="#load-the-exported-model">Load the exported model</a></li>
+        <li><a href="#inference-on-validation-images">Inference on Validation Images</a></li>
+      </ul>
+    </li>
+    <li><a href="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+              </div>
+          </aside>
+          
+
+          
+          <aside class="tags">
+            <h5>Tags</h5>
+            <ul class="tags-ul list-unstyled list-inline">
+              
+              <li class="list-inline-item"><a href="https://sineeli.github.io/tags/tensorflow" target="_blank">Tensorflow</a></li>
+              
+              <li class="list-inline-item"><a href="https://sineeli.github.io/tags/object-detection" target="_blank">Object Detection</a></li>
+              
+            </ul>
+          </aside>
+          
+
+          
+          <aside class="social">
+            <h5>Social</h5>
+            <div class="social-content">
+              <ul class="list-inline">
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://twitter.com/share?text=Car%20Number%20Plate%20Recognition%20using%20Tensorflow%20Model%20Garden&url=https%3a%2f%2fsineeli.github.io%2fblogs%2fcar-num-plate-detection%2f">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href="https://api.whatsapp.com/send?text=Car%20Number%20Plate%20Recognition%20using%20Tensorflow%20Model%20Garden: https%3a%2f%2fsineeli.github.io%2fblogs%2fcar-num-plate-detection%2f">
+                    <i class="fab fa-whatsapp"></i>
+                  </a>
+                </li>
+                <li class="list-inline-item text-center">
+                  <a target="_blank" href='mailto:?subject=Car%20Number%20Plate%20Recognition%20using%20Tensorflow%20Model%20Garden&amp;body=Check%20out%20this%20site https%3a%2f%2fsineeli.github.io%2fblogs%2fcar-num-plate-detection%2f'>
+                    <i class="fa fa-envelope"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </aside>
+          
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-9 p-4">
+        
+      </div>
+    </div>
+  </div>
+  <button class="p-2 px-3" onclick="topFunction()" id="topScroll">
+    <i class="fas fa-angle-up"></i>
+  </button>
+</section>
+
+
+<div class="progress">
+  <div id="scroll-progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<Script src="/js/scrollProgressBar.js"></script>
+
+
+<script>
+  var topScroll = document.getElementById("topScroll");
+  window.onscroll = function() {scrollFunction()};
+
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      topScroll.style.display = "block";
+    } else {
+      topScroll.style.display = "none";
+    }
+  }
+
+  function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+  }
+
+  
+  let stickySideBarElem = document.getElementById("stickySideBar");
+  let stickyNavBar =  true ;
+  if(stickyNavBar) {
+    let headerElem = document.getElementById("profileHeader");
+    let headerHeight = headerElem.offsetHeight + 15;
+    stickySideBarElem.style.top = headerHeight + "px";
+  } else {
+    stickySideBarElem.style.top = "50px";
+  }
+</script>
+
+
+<script src="/js/readingTime.js"></script>
+
+
+
+  </div><footer>
+    
+ 
+
+<div class="text-center pt-2">
+    
+    <span class="px-1">
+        <a href="https://github.com/sineeli" aria-label="github">
+            <svg xmlns="http://www.w3.org/2000/svg" width="2.7em" height="2.7em" viewBox="0 0 1792 1792">
+                <path
+                    d="M522 1352q-8 9-20-3-13-11-4-19 8-9 20 3 12 11 4 19zm-42-61q9 12 0 19-8 6-17-7t0-18q9-7 17 6zm-61-60q-5 7-13 2-10-5-7-12 3-5 13-2 10 5 7 12zm31 34q-6 7-16-3-9-11-2-16 6-6 16 3 9 11 2 16zm129 112q-4 12-19 6-17-4-13-15t19-7q16 5 13 16zm63 5q0 11-16 11-17 2-17-11 0-11 16-11 17-2 17 11zm58-10q2 10-14 14t-18-8 14-15q16-2 18 9zm964-956v960q0 119-84.5 203.5t-203.5 84.5h-224q-16 0-24.5-1t-19.5-5-16-14.5-5-27.5v-239q0-97-52-142 57-6 102.5-18t94-39 81-66.5 53-105 20.5-150.5q0-121-79-206 37-91-8-204-28-9-81 11t-92 44l-38 24q-93-26-192-26t-192 26q-16-11-42.5-27t-83.5-38.5-86-13.5q-44 113-7 204-79 85-79 206 0 85 20.5 150t52.5 105 80.5 67 94 39 102.5 18q-40 36-49 103-21 10-45 15t-57 5-65.5-21.5-55.5-62.5q-19-32-48.5-52t-49.5-24l-20-3q-21 0-29 4.5t-5 11.5 9 14 13 12l7 5q22 10 43.5 38t31.5 51l10 23q13 38 44 61.5t67 30 69.5 7 55.5-3.5l23-4q0 38 .5 103t.5 68q0 22-11 33.5t-22 13-33 1.5h-224q-119 0-203.5-84.5t-84.5-203.5v-960q0-119 84.5-203.5t203.5-84.5h960q119 0 203.5 84.5t84.5 203.5z" />
+
+                <metadata>
+                    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                        xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+                        <rdf:Description about="https://iconscout.com/legal#licenses"
+                            dc:title="Github, Online, Project, Hosting, Square"
+                            dc:description="Github, Online, Project, Hosting, Square" dc:publisher="Iconscout"
+                            dc:date="2016-12-14" dc:format="image/svg+xml" dc:language="en">
+                            <dc:creator>
+                                <rdf:Bag>
+                                    <rdf:li>Font Awesome</rdf:li>
+                                </rdf:Bag>
+                            </dc:creator>
+                        </rdf:Description>
+                    </rdf:RDF>
+                </metadata>
+            </svg>
+        </a>
+    </span>
+    
+
+    
+    <span class="px-1">
+        <a href="https://www.linkedin.com/in/sravananeeli/" aria-label="linkedin">
+            <svg xmlns="http://www.w3.org/2000/svg" width='2.4em' height='2.4em' fill="#fff" aria-label="LinkedIn"
+                viewBox="0 0 512 512">
+                <rect width="512" height="512" fill="#0077b5" rx="15%" />
+                <circle cx="142" cy="138" r="37" />
+                <path stroke="#fff" stroke-width="66" d="M244 194v198M142 194v198" />
+                <path d="M276 282c0-20 13-40 36-40 24 0 33 18 33 45v105h66V279c0-61-32-89-76-89-34 0-51 19-59 32" />
+            </svg>
+        </a>
+    </span>
+    
+
+    
+    <a href="https://twitter.com/neeli_siva" aria-label="twitter">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
+            <path fill="#03a9f4"
+                d="M42,37c0,2.762-2.239,5-5,5H11c-2.762,0-5-2.238-5-5V11c0-2.762,2.238-5,5-5h26c2.761,0,5,2.238,5,5 V37z" />
+            <path fill="#fff"
+                d="M36,17.12c-0.882,0.391-1.999,0.758-3,0.88c1.018-0.604,2.633-1.862,3-3 c-0.951,0.559-2.671,1.156-3.793,1.372C31.311,15.422,30.033,15,28.617,15C25.897,15,24,17.305,24,20v2c-4,0-7.9-3.047-10.327-6 c-0.427,0.721-0.667,1.565-0.667,2.457c0,1.819,1.671,3.665,2.994,4.543c-0.807-0.025-2.335-0.641-3-1c0,0.016,0,0.036,0,0.057 c0,2.367,1.661,3.974,3.912,4.422C16.501,26.592,16,27,14.072,27c0.626,1.935,3.773,2.958,5.928,3c-1.686,1.307-4.692,2-7,2 c-0.399,0-0.615,0.022-1-0.023C14.178,33.357,17.22,34,20,34c9.057,0,14-6.918,14-13.37c0-0.212-0.007-0.922-0.018-1.13 C34.95,18.818,35.342,18.104,36,17.12" />
+        </svg>
+    </a>
+    
+
+    
+    <a href="https://www.instagram.com/m.d.luffy1994/" aria-label="instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px">
+            <radialGradient id="yOrnnhliCrdS2gy~4tD8ma" cx="19.38" cy="42.035" r="44.899"
+                gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#fd5" />
+                <stop offset=".328" stop-color="#ff543f" />
+                <stop offset=".348" stop-color="#fc5245" />
+                <stop offset=".504" stop-color="#e64771" />
+                <stop offset=".643" stop-color="#d53e91" />
+                <stop offset=".761" stop-color="#cc39a4" />
+                <stop offset=".841" stop-color="#c837ab" />
+            </radialGradient>
+            <path fill="url(#yOrnnhliCrdS2gy~4tD8ma)"
+                d="M34.017,41.99l-20,0.019c-4.4,0.004-8.003-3.592-8.008-7.992l-0.019-20	c-0.004-4.4,3.592-8.003,7.992-8.008l20-0.019c4.4-0.004,8.003,3.592,8.008,7.992l0.019,20	C42.014,38.383,38.417,41.986,34.017,41.99z" />
+            <radialGradient id="yOrnnhliCrdS2gy~4tD8mb" cx="11.786" cy="5.54" r="29.813"
+                gradientTransform="matrix(1 0 0 .6663 0 1.849)" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#4168c9" />
+                <stop offset=".999" stop-color="#4168c9" stop-opacity="0" />
+            </radialGradient>
+            <path fill="url(#yOrnnhliCrdS2gy~4tD8mb)"
+                d="M34.017,41.99l-20,0.019c-4.4,0.004-8.003-3.592-8.008-7.992l-0.019-20	c-0.004-4.4,3.592-8.003,7.992-8.008l20-0.019c4.4-0.004,8.003,3.592,8.008,7.992l0.019,20	C42.014,38.383,38.417,41.986,34.017,41.99z" />
+            <path fill="#fff"
+                d="M24,31c-3.859,0-7-3.14-7-7s3.141-7,7-7s7,3.14,7,7S27.859,31,24,31z M24,19c-2.757,0-5,2.243-5,5	s2.243,5,5,5s5-2.243,5-5S26.757,19,24,19z" />
+            <circle cx="31.5" cy="16.5" r="1.5" fill="#fff" />
+            <path fill="#fff"
+                d="M30,37H18c-3.859,0-7-3.14-7-7V18c0-3.86,3.141-7,7-7h12c3.859,0,7,3.14,7,7v12	C37,33.86,33.859,37,30,37z M18,13c-2.757,0-5,2.243-5,5v12c0,2.757,2.243,5,5,5h12c2.757,0,5-2.243,5-5V18c0-2.757-2.243-5-5-5H18z" />
+        </svg>
+    </a>
+    
+
+    
+</div><div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-4 text-center">
+            <div class="pb-2">
+                <a href="https://sineeli.github.io" title="Sravana Neeli">
+                    <img alt="Footer logo" src="/images/logo.png"
+                        height="40px" width="40px">
+                </a>
+            </div>
+            &copy; 2023  All rights reserved
+            <div class="text-secondary">
+                Made with
+                <span class="text-danger">
+                    &#10084;
+                </span>
+                and
+                <a href="https://github.com/gurusabarish/hugo-profile" target="_blank"
+                    title="Designed and developed by gurusabarish">
+                    Hugo Profile
+                </a>
+            </div>
+        </div>
+    </div>
+</div></footer><script src="/bootstrap-5/js/bootstrap.bundle.min.js"></script>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+
+</script>
+
+
+    <script src="/js/search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+  <section id="search-content" class="py-2">
+    <div class="container" id="search-results"></div>
+  </section>
+</body>
+
+</html>

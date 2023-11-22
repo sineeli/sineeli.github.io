@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tensorflow on Sravana Neeli</title>
+    <link>https://sineeli.github.io/tags/tensorflow/</link>
+    <description>Recent content in Tensorflow on Sravana Neeli</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 22 Nov 2023 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://sineeli.github.io/tags/tensorflow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Car Number Plate Recognition using Tensorflow Model Garden</title>
+      <link>https://sineeli.github.io/blogs/car-num-plate-detection/</link>
+      <pubDate>Wed, 22 Nov 2023 00:00:00 +0000</pubDate>
+      <guid>https://sineeli.github.io/blogs/car-num-plate-detection/</guid>
+      <description>Object Detection Using TensorFlow and Roboflow Introduction Object detection is a crucial task in computer vision, allowing machines to identify and locate objects within images. In this tutorial, we’ll walk through the process of building an object detection model using TensorFlow and Roboflow, a platform that simplifies dataset management.
+Install TensorFlow Model Garden Package (tf-models-official) pip install -U tf-models-official Import Necessary Libraries import os import pprint import tempfile import numpy as np import tensorflow as tf import matplotlib.</description>
+    </item>
+  </channel>
+</rss>
