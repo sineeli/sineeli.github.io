@@ -115,6 +115,8 @@ navbar:
         Download on GitHub:
             icon: fab fa-github
             url: https://github.com/ppoffice/hexo-theme-icarus
+    # Enable dark mode toggle
+    dark_mode_toggle: true
 # Page footer configurations
 footer:
     # Copyright text
