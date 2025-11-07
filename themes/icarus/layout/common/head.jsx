@@ -169,52 +169,19 @@ module.exports = class extends Component {
             {hlTheme ? <link data-pjax rel="stylesheet" href={cdn('highlight.js', '11.7.0', 'styles/' + hlTheme + '.css')} /> : null}
             <link rel="stylesheet" href={fontCssUrl[variant]} />
             <link data-pjax rel="stylesheet" href={url_for('/css/' + variant + '.css')} />
-            <Plugins site={site} config={config} helper={helper} page={page} head={true} />
-            
-            {/* Dark mode styles */}
+            {/* Inline dark mode styles */}
             <style dangerouslySetInnerHTML={{ __html: `
-                .dark-mode {
-                    --background-color: #1a1a1a;
-                    --card-background: #2d2d30;
-                    --text-color: #e0e0e0;
-                    --border-color: #404040;
-                }
-                .dark-mode body {
-                    background-color: var(--background-color);
-                    color: var(--text-color);
-                }
-                .dark-mode .navbar {
-                    background-color: var(--card-background);
-                }
-                .dark-mode .card {
-                    background-color: var(--card-background);
-                    color: var(--text-color);
-                }
-                .dark-mode .footer {
-                    background-color: var(--card-background);
-                    color: var(--text-color);
-                }
-                .dark-mode .title, .dark-mode .subtitle, .dark-mode .content h1, 
-                .dark-mode .content h2, .dark-mode .content h3, .dark-mode .content h4 {
-                    color: var(--text-color);
-                }
-                .dark-mode .button {
-                    background-color: #404040;
-                    color: var(--text-color);
-                }
-                .dark-mode .input, .dark-mode .textarea, .dark-mode .select select {
-                    background-color: #404040;
-                    color: var(--text-color);
-                    border-color: var(--border-color);
-                }
-                .dark-mode a {
-                    color: #61afef;
-                }
-                .dark-mode code {
-                    background-color: #404040;
-                    color: #e06c75;
-                }
-            ` }}></style>
+                .dark-mode { background: #0d1117; color: #c9d1d9; }
+                .dark-mode body { background: #0d1117; color: #c9d1d9; }
+                .dark-mode .navbar-main { background: #161b22; border-bottom: 1px solid #30363d; }
+                .dark-mode .card { background: #161b22; border: 1px solid #30363d; }
+                .dark-mode .footer { background: #161b22; border-top: 1px solid #30363d; }
+                .dark-mode a { color: #58a6ff; }
+                .dark-mode .content { color: #c9d1d9; }
+                .dark-mode .button { background: #21262d; color: #c9d1d9; border-color: #30363d; }
+                .dark-mode input, .dark-mode textarea { background: #0d1117; color: #c9d1d9; border-color: #30363d; }
+            ` }} />
+            <Plugins site={site} config={config} helper={helper} page={page} head={true} />
 
             {adsenseClientId ? <script data-ad-client={adsenseClientId}
                 src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" async></script> : null}

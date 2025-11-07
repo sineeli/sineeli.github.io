@@ -62,9 +62,9 @@ class Navbar extends Component {
                                 </a>;
                             })}
                         </Fragment> : null}
-                        {/* Dark/Light mode toggle button */}
-                        <a class="navbar-item" id="dark-mode-toggle" href="javascript:;" title="Toggle dark mode" aria-label="Toggle dark mode" aria-pressed="false">
-                            <i class="fas fa-moon"></i>
+                        {/* Dark/Light theme toggle */}
+                        <a id="dark-mode-toggle" class="navbar-item" href="javascript:;" title="Toggle theme" aria-pressed="false">
+                            <i class="fas fa-moon" aria-hidden="true"></i>
                         </a>
                         {showToc ? <a class="navbar-item is-hidden-tablet catalogue" title={tocTitle} href="javascript:;">
                             <i class="fas fa-list-ul"></i>
