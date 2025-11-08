@@ -2,32 +2,68 @@
  *         Dark Mode Styles
  * --------------------------------- */
 
+/* CSS Custom Properties for theming */
+:root
+    --bg-primary: #ffffff
+    --bg-secondary: #f5f5f5
+    --bg-tertiary: #e0e0e0
+    --text-primary: #000000
+    --text-secondary: #4a4a4a
+    --text-tertiary: #767676
+    --border-color: #dbdbdb
+    --link-color: #3273dc
+    --link-hover: #363636
+    --card-bg: #ffffff
+    --navbar-bg: #ffffff
+    --footer-bg: #fafafa
+    --code-bg: #f5f5f5
+    --highlight-bg: #fafafa
+
+.dark-mode
+    --bg-primary: #0d1117
+    --bg-secondary: #161b22
+    --bg-tertiary: #21262d
+    --text-primary: #c9d1d9
+    --text-secondary: #8b949e
+    --text-tertiary: #6e7681
+    --border-color: #30363d
+    --link-color: #58a6ff
+    --link-hover: #79c0ff
+    --card-bg: #161b22
+    --navbar-bg: #161b22
+    --footer-bg: #161b22
+    --code-bg: #21262d
+    --highlight-bg: #1e1e1e
+
 /* Add smooth transition for theme changes */
 html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4, h5, h6, span
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease
 
 /* Dark mode base styles */
 .dark-mode
-    background: #0d1117
-    color: #c9d1d9
+    background: var(--bg-primary)
+    color: var(--text-primary)
+
+    *, *::before, *::after
+        border-color: var(--border-color)
 
     body
-        background: #0d1117
-        color: #c9d1d9
+        background: var(--bg-primary)
+        color: var(--text-primary)
 
     .navbar-main
-        background: #161b22
-        border-bottom: 1px solid #30363d
+        background: var(--navbar-bg)
+        border-bottom: 1px solid var(--border-color)
 
     .card
-        background: #161b22
-        border: 1px solid #30363d
-        color: #c9d1d9
+        background: var(--card-bg)
+        border: 1px solid var(--border-color)
+        color: var(--text-primary)
 
     .footer
-        background: #161b22
-        border-top: 1px solid #30363d
-        color: #c9d1d9
+        background: var(--footer-bg)
+        border-top: 1px solid var(--border-color)
+        color: var(--text-primary)
 
     /* Dark mode link colors - bright blue for better visibility */
     a
@@ -298,6 +334,49 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
         
         &:hover
             opacity: 0.8
+
+/* Dark mode share button styles */
+.dark-mode
+    /* AddToAny share buttons in dark mode */
+    .a2a_kit a
+        filter: brightness(1.2)
+    
+    /* AddToAny menu/popup in dark mode */
+    .a2a_menu
+        background: #161b22 !important
+        border-color: #30363d !important
+    
+    .a2a_menu a
+        color: #c9d1d9 !important
+        
+        &:hover
+            background: #21262d !important
+            color: #e6eef8 !important
+    
+    /* AddToAny cookie notice in dark mode */
+    .a2a_notice
+        background: #161b22 !important
+        border-color: #30363d !important
+        color: #c9d1d9 !important
+    
+    .a2a_notice a
+        color: #58a6ff !important
+        
+        &:hover
+            color: #79c0ff !important
+    
+    /* AddToAny overlay background in dark mode */
+    #a2a_overlay
+        background: rgba(13, 17, 23, 0.8) !important
+    
+    /* AddToAny modal in dark mode */
+    #a2a_modal
+        background: #161b22 !important
+        border-color: #30363d !important
+        color: #c9d1d9 !important
+    
+    #a2a_modal .a2a_button_text
+        color: #c9d1d9 !important
 
 /* Post card separator line - lighter gray */
 .card-content hr,

@@ -124,6 +124,19 @@ module.exports = class extends Component {
             {meta && meta.length ? <MetaTags meta={meta} /> : null}
 
             <title>{getPageTitle(page, config.title, helper)}</title>
+            
+            {/* Apply dark mode immediately to prevent flash */}
+            <script dangerouslySetInnerHTML={{
+                __html: `
+                    (function() {
+                        const stored = localStorage.getItem('theme-mode');
+                        const isDark = stored !== null ? stored === 'true' : false;
+                        if (isDark) {
+                            document.documentElement.classList.add('dark-mode');
+                        }
+                    })();
+                `
+            }} />
 
             <WebApp.Cacheable
                 helper={helper}
