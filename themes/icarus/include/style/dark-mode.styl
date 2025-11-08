@@ -337,46 +337,180 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
 
 /* Dark mode share button styles */
 .dark-mode
-    /* AddToAny share buttons in dark mode */
+    /* AddToAny share buttons - the icons already have colors, just adjust brightness */
     .a2a_kit a
-        filter: brightness(1.2)
-    
-    /* AddToAny menu/popup in dark mode */
-    .a2a_menu
-        background: #161b22 !important
-        border-color: #30363d !important
-    
-    .a2a_menu a
-        color: #c9d1d9 !important
+        opacity: 0.9
         
         &:hover
-            background: #21262d !important
-            color: #e6eef8 !important
+            opacity: 1
     
-    /* AddToAny cookie notice in dark mode */
-    .a2a_notice
+    /* Cookie Consent popup in dark mode */
+    .cc-window
         background: #161b22 !important
-        border-color: #30363d !important
+        border: 1px solid #30363d !important
         color: #c9d1d9 !important
     
-    .a2a_notice a
+    .cc-message
+        color: #c9d1d9 !important
+    
+    .cc-link
         color: #58a6ff !important
         
         &:hover
             color: #79c0ff !important
     
-    /* AddToAny overlay background in dark mode */
-    #a2a_overlay
-        background: rgba(13, 17, 23, 0.8) !important
+    .cc-btn
+        background: #21262d !important
+        color: #c9d1d9 !important
+        border-color: #30363d !important
+        
+        &:hover
+            background: #30363d !important
+            color: #e6eef8 !important
     
-    /* AddToAny modal in dark mode */
-    #a2a_modal
+    .cc-allow, .cc-dismiss
+        background: #238636 !important
+        
+        &:hover
+            background: #2ea043 !important
+    
+    .cc-deny
+        background: #da3633 !important
+        
+        &:hover
+            background: #e5534b !important
+    
+    /* Gallery (lightGallery) in dark mode */
+    .lg-backdrop
+        background-color: rgba(13, 17, 23, 0.95) !important
+    
+    .lg-outer
+        background-color: #0d1117 !important
+    
+    .lg-toolbar, .lg-actions
+        background-color: rgba(22, 27, 34, 0.8) !important
+    
+    .lg-sub-html
+        background-color: rgba(22, 27, 34, 0.9) !important
+        color: #c9d1d9 !important
+    
+    /* Progress bar in dark mode */
+    #nprogress .bar
+        background: #58a6ff !important
+    
+    #nprogress .peg
+        box-shadow: 0 0 10px #58a6ff, 0 0 5px #58a6ff !important
+    
+    #nprogress .spinner-icon
+        border-top-color: #58a6ff !important
+        border-left-color: #58a6ff !important
+    
+    /* Back to top button in dark mode */
+    #back-to-top
+        background: #21262d !important
+        color: #c9d1d9 !important
+        border-color: #30363d !important
+        
+        &:hover
+            background: #30363d !important
+            color: #58a6ff !important
+    
+    /* Insight search in dark mode */
+    .searchbox
         background: #161b22 !important
         border-color: #30363d !important
-        color: #c9d1d9 !important
     
-    #a2a_modal .a2a_button_text
+    .searchbox-input
+        background: #0d1117 !important
         color: #c9d1d9 !important
+        border-color: #30363d !important
+        
+        &::placeholder
+            color: #8b949e !important
+    
+    .searchbox-result-list
+        background: #161b22 !important
+        border-color: #30363d !important
+    
+    .searchbox-result-item
+        border-color: #30363d !important
+        
+        &:hover
+            background: #21262d !important
+    
+    .searchbox-result-item-title
+        color: #e6eef8 !important
+    
+    .searchbox-result-item-snippet
+        color: #8b949e !important
+    
+    .ins-search
+        background: rgba(13, 17, 23, 0.95) !important
+    
+    .ins-search-wrapper
+        background: #161b22 !important
+        border-color: #30363d !important
+    
+    .ins-section-wrapper
+        background: #161b22 !important
+    
+    .ins-section-header
+        background: #21262d !important
+        color: #e6eef8 !important
+        border-color: #30363d !important
+    
+    .ins-input-wrapper
+        background: #0d1117 !important
+        border-color: #30363d !important
+    
+    .ins-input
+        background: transparent !important
+        color: #c9d1d9 !important
+        
+        &::placeholder
+            color: #8b949e !important
+    
+    .ins-selectable
+        background: #161b22 !important
+        color: #c9d1d9 !important
+        border-color: #30363d !important
+        
+        &:hover, &.active
+            background: #21262d !important
+            color: #58a6ff !important
+    
+    .ins-slug
+        color: #8b949e !important
+    
+    /* TOC (Table of Contents) widget in dark mode */
+    .toc
+        background: #161b22 !important
+        border-color: #30363d !important
+    
+    .toc-link
+        color: #8b949e !important
+        
+        &:hover
+            color: #58a6ff !important
+        
+        &.is-active-link
+            color: #58a6ff !important
+    
+    .toc-item
+        border-color: #30363d !important
+    
+    /* Widget boxes in dark mode */
+    .widget
+        .menu-list a
+            color: #8b949e !important
+            
+            &:hover
+                background: #21262d !important
+                color: #58a6ff !important
+                
+            &.is-active
+                background: #21262d !important
+                color: #58a6ff !important
 
 /* Post card separator line - lighter gray */
 .card-content hr,
