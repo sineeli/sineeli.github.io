@@ -202,3 +202,86 @@ $searchbox-bg-pagination-item-disabled ?= $searchbox-bg-container
         width: 100%
         height: 100%
         border-radius: 0
+
+/* Dark mode overrides for search box */
+.dark-mode
+    .searchbox
+        background: rgba(13, 17, 23, 0.95)
+    
+    .searchbox-container
+        background: #161b22
+        border-color: #30363d
+    
+    .searchbox-header
+        background: #161b22
+    
+    .searchbox-input
+        background: #161b22
+        color: #c9d1d9
+        
+        &::placeholder
+            color: #8b949e
+    
+    .searchbox-close
+        color: #c9d1d9
+        
+        &:hover
+            background: #21262d
+            color: #58a6ff
+        
+        &:active
+            background: #30363d
+    
+    .searchbox-body
+        background: #0d1117
+        border-top-color: #30363d
+    
+    .searchbox-result-section
+        border-bottom-color: #30363d
+        
+        header
+            color: #8b949e
+            background: #0d1117
+    
+    .searchbox-result-item
+        background: #0d1117
+        color: #c9d1d9
+        
+        &:not(.disabled):not(.active):not(:active):hover
+            background: #161b22
+        
+        &:active, &.active
+            background: #238636
+            color: #ffffff
+        
+        em
+            background: #6e7681
+            color: #ffeb3b
+    
+    .searchbox-result-title
+        color: #e6eef8
+    
+    .searchbox-result-title-secondary,
+    .searchbox-result-preview
+        color: #8b949e
+    
+    .searchbox-footer
+        background: #161b22
+        border-top-color: #30363d
+    
+    .searchbox-pagination-link
+        background: #21262d
+        color: #c9d1d9
+        
+        &:hover
+            background: #30363d
+    
+    .searchbox-pagination-item.active
+        .searchbox-pagination-link
+            background: #238636
+            color: #ffffff
+    
+    .searchbox-pagination-item.disabled
+        .searchbox-pagination-link
+            background: #161b22
+            color: #6e7681
