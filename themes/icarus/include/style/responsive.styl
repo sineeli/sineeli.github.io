@@ -2,18 +2,18 @@
  *         Responsive Layout
  * --------------------------------- */
 +widescreen()
-    .is-1-column .container, .is-2-column .container
-        max-width: $desktop - 2 * $gap
-        width: $desktop - 2 * $gap
+    .is-1-column .container, .is-2-column .container, .is-3-column .container
+        max-width: $widescreen - 2 * $gap
+        width: auto
 
 +fullhd()
-    .is-2-column .container
-        max-width: $widescreen - 2 * $gap
-        width: $widescreen - 2 * $gap
+    .is-2-column .container, .is-3-column .container
+        max-width: $fullhd - 2 * $gap
+        width: auto
 
     .is-1-column .container
         max-width: $desktop - 2 * $gap
-        width: $desktop - 2 * $gap
+        width: auto
 
 +tablet()
     .is-sticky

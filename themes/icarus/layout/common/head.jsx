@@ -82,10 +82,7 @@ module.exports = class extends Component {
                 images.push(img[1]);
             }
         } else {
-            // Do NOT use the theme default og_image.png as a fallback image for every page.
-            // When no page-specific image/thumbnail/cover is present, leave images empty so
-            // social platforms will not show the Icarus logo as the share thumbnail.
-            images = [];
+            images = [url_for('/img/og_image.png')];
         }
 
         let adsenseClientId = null;
@@ -104,13 +101,6 @@ module.exports = class extends Component {
             openGraphImages = page.photos;
         }
 
-        // Only pass images prop to OpenGraph when we actually have images.
-        // Ensure we pass an array (possibly empty) to OpenGraph so the component
-        // never receives undefined and attempts to parse it.
-        const openGraphImagesProp = (Array.isArray(openGraphImages) && openGraphImages.length) || typeof openGraphImages === 'string'
-            ? openGraphImages
-            : [];
-
         let structuredImages = images;
         if ((typeof structured_data === 'object' && structured_data !== null)
             && ((Array.isArray(structured_data.image) && structured_data.image.length > 0) || typeof structured_data.image === 'string')) {
@@ -118,10 +108,6 @@ module.exports = class extends Component {
         } else if ((Array.isArray(page.photos) && page.photos.length > 0) || typeof page.photos === 'string') {
             structuredImages = page.photos;
         }
-
-        const structuredImagesProp = (Array.isArray(structuredImages) && structuredImages.length) || typeof structuredImages === 'string'
-            ? structuredImages
-            : [];
 
         let followItVerificationCode = null;
         if (Array.isArray(config.widgets)) {
@@ -155,7 +141,7 @@ module.exports = class extends Component {
                 description={open_graph.description || page.description || page.excerpt || page.content || config.description}
                 keywords={(page.tags && page.tags.length ? page.tags : undefined) || config.keywords}
                 url={open_graph.url || page.permalink || url}
-                images={openGraphImagesProp}
+                images={openGraphImages}
                 siteName={open_graph.site_name || config.title}
                 language={language}
                 twitterId={open_graph.twitter_id}
@@ -174,7 +160,7 @@ module.exports = class extends Component {
                 publisherLogo={structured_data.publisher_logo || config.logo}
                 date={page.date}
                 updated={page.updated}
-                images={structuredImagesProp} /> : null}
+                images={structuredImages} /> : null}
 
             {canonical_url ? <link rel="canonical" href={canonical_url} /> : null}
             {rss ? <link rel="alternate" href={url_for(rss)} title={config.title} type="application/atom+xml" /> : null}
@@ -183,226 +169,6 @@ module.exports = class extends Component {
             {hlTheme ? <link data-pjax rel="stylesheet" href={cdn('highlight.js', '11.7.0', 'styles/' + hlTheme + '.css')} /> : null}
             <link rel="stylesheet" href={fontCssUrl[variant]} />
             <link data-pjax rel="stylesheet" href={url_for('/css/' + variant + '.css')} />
-            {/* Inline dark mode styles */}
-            <style dangerouslySetInnerHTML={{ __html: `
-                /* Add smooth transition for theme changes */
-                html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4, h5, h6, span {
-                    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-                }
-                
-                /* Dark mode base styles */
-                .dark-mode { background: #0d1117; color: #c9d1d9; }
-                .dark-mode body { background: #0d1117; color: #c9d1d9; }
-                .dark-mode .navbar-main { background: #161b22; border-bottom: 1px solid #30363d; }
-                .dark-mode .card { background: #161b22; border: 1px solid #30363d; color: #c9d1d9; }
-                .dark-mode .footer { background: #161b22; border-top: 1px solid #30363d; color: #c9d1d9; }
-                
-                /* Dark mode link colors - bright blue for better visibility */
-                .dark-mode a { color: #58a6ff; }
-                .dark-mode a:hover { color: #79c0ff; }
-                
-                /* Dark mode text colors - ensure all text is visible */
-                .dark-mode .content { color: #c9d1d9; }
-                .dark-mode .title { color: #e6eef8; }
-                .dark-mode .subtitle { color: #c9d1d9; }
-                .dark-mode p, .dark-mode span, .dark-mode div { color: #c9d1d9; }
-                .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6 { color: #e6eef8; }
-                
-                /* Widget and card text */
-                .dark-mode .widget .menu-label { color: #e6eef8; }
-                .dark-mode .widget .heading { color: #8b949e; }
-                .dark-mode .card-header-title { color: #e6eef8; }
-                .dark-mode .card-content { color: #c9d1d9; }
-                
-                /* Navbar items */
-                .dark-mode .navbar-item { color: #c9d1d9; }
-                .dark-mode .navbar-item:hover { color: #e6eef8; background-color: rgba(48, 54, 61, 0.5); }
-                .dark-mode .navbar-item.is-active { 
-                    color: #58a6ff; 
-                    background-color: rgba(48, 54, 61, 0.5);
-                    border-bottom: 2px solid #58a6ff;
-                }
-                
-                /* Metadata and dates */
-                .dark-mode .date, .dark-mode .categories, .dark-mode .is-size-7 { color: #8b949e; }
-                
-                /* Photography title/link adjustments */
-                .card .title a.has-link-black-ter { color: #111; transition: color 0.18s ease, transform 0.12s ease; }
-                .card .title a.has-link-black-ter:hover { transform: translateY(-2px); }
-                .dark-mode .card .title a.has-link-black-ter { color: #e6eef8; }
-                .dark-mode .card .title a.has-link-black-ter:hover { color: #58a6ff; }
-                
-                /* Post title styling - blue by default, white/black on hover, no animation */
-                .card .title a,
-                .card .title a.link-muted {
-                    color: #58a6ff !important;
-                    transition: color 0.2s ease;
-                    transform: none !important;
-                }
-                .card .title a:hover,
-                .card .title a.link-muted:hover {
-                    color: #111 !important;
-                    transform: none !important;
-                }
-                .dark-mode .card .title a,
-                .dark-mode .card .title a.link-muted {
-                    color: #58a6ff !important;
-                }
-                .dark-mode .card .title a:hover,
-                .dark-mode .card .title a.link-muted:hover {
-                    color: #fff !important;
-                }
-                
-                /* Make post titles smaller */
-                .card .title.is-3 {
-                    font-size: 1.5rem !important;
-                }
-                .card .title.is-3.is-size-4-mobile {
-                    font-size: 1.25rem !important;
-                }
-                @media screen and (max-width: 768px) {
-                    .card .title.is-3.is-size-4-mobile {
-                        font-size: 1.1rem !important;
-                    }
-                }
-                
-                /* Make page headings (Blogs, Photography, etc.) bigger */
-                .card-content > .title.is-3:first-child,
-                .content > .title.is-3:first-child {
-                    font-size: 2.25rem !important;
-                }
-                
-                /* Center share buttons */
-                .a2a_kit {
-                    display: flex !important;
-                    justify-content: center !important;
-                    align-items: center !important;
-                }
-                
-                /* Post card separator line - lighter gray */
-                .card-content hr,
-                .content hr {
-                    background-color: #e0e0e0;
-                    border: none;
-                    height: 1px;
-                }
-                .dark-mode .card-content hr,
-                .dark-mode .content hr {
-                    background-color: #3a3a3a;
-                }
-                
-                /* Buttons and inputs */
-                .dark-mode .button { background: #21262d; color: #c9d1d9; border-color: #30363d; }
-                .dark-mode .button:hover { background: #30363d; color: #e6eef8; }
-                .dark-mode input, .dark-mode textarea { background: #0d1117; color: #c9d1d9; border-color: #30363d; }
-                .dark-mode input::placeholder, .dark-mode textarea::placeholder { color: #8b949e; }
-                
-                /* Tags and labels */
-                .dark-mode .tag { background: #21262d; color: #c9d1d9; }
-                .dark-mode .menu-list a { color: #c9d1d9; }
-                .dark-mode .menu-list a:hover { background: #21262d; color: #e6eef8; }
-                
-                /* Notifications and messages */
-                .dark-mode .notification { background: #161b22; color: #c9d1d9; }
-                .dark-mode code { background: #21262d; color: #ff7b72; }
-                .dark-mode pre { background: #161b22; color: #c9d1d9; }
-                
-                /* Timeline (archives page) */
-                .dark-mode .timeline { border-left-color: #30363d; }
-                .dark-mode .timeline .media:before { background: #30363d; }
-                .dark-mode .timeline .media:last-child:after { background: #161b22; }
-                
-                /* Read more button and muted links */
-                .dark-mode .article-more { 
-                    background: #21262d !important; 
-                    color: #58a6ff !important; 
-                    border-color: #30363d !important; 
-                }
-                .dark-mode .article-more:hover { 
-                    background: #30363d !important; 
-                    color: #79c0ff !important;
-                    border-color: #58a6ff !important;
-                }
-                .dark-mode .article-more .has-text-grey {
-                    color: #8b949e !important;
-                }
-                .dark-mode .link-muted { color: #8b949e; }
-                .dark-mode .link-muted:hover { color: #58a6ff; }
-                
-                /* Article navigation links */
-                .dark-mode .article-nav-prev, .dark-mode .article-nav-next {
-                    color: #8b949e;
-                }
-                .dark-mode .article-nav-prev:hover, .dark-mode .article-nav-next:hover {
-                    color: #58a6ff;
-                }
-                
-                /* Code blocks in dark mode */
-                .dark-mode figure.highlight {
-                    background: #1e1e1e !important;
-                    border: 1px solid #404040 !important;
-                }
-                .dark-mode figure.highlight pre {
-                    background: #1e1e1e !important;
-                    color: #d4d4d4 !important;
-                }
-                .dark-mode figure.highlight code {
-                    background: #1e1e1e !important;
-                    color: #d4d4d4 !important;
-                }
-                .dark-mode figure.highlight figcaption {
-                    background: #2d2d2d !important;
-                    color: #cccccc !important;
-                    border-bottom: 1px solid #404040;
-                }
-                .dark-mode figure.highlight .gutter {
-                    background: #2d2d2d !important;
-                    color: #858585 !important;
-                }
-                .dark-mode figure.highlight .gutter pre {
-                    color: #858585 !important;
-                }
-                .dark-mode figure.highlight table {
-                    background: #1e1e1e !important;
-                }
-                
-                /* Inline code in dark mode */
-                .dark-mode .content code:not(.hljs) {
-                    background: #2d2d2d !important;
-                    color: #f8f8f2 !important;
-                }
-                
-                /* Article licensing in dark mode */
-                .dark-mode .article-licensing {
-                    background: #21262d !important;
-                    border: 1px solid #30363d !important;
-                }
-                .dark-mode .article-licensing .licensing-title,
-                .dark-mode .article-licensing .licensing-title p {
-                    color: #e6eef8 !important;
-                }
-                .dark-mode .article-licensing h6 {
-                    color: #8b949e !important;
-                }
-                .dark-mode .article-licensing p {
-                    color: #c9d1d9 !important;
-                }
-                .dark-mode .article-licensing a {
-                    color: #58a6ff !important;
-                }
-                
-                /* Remove button box borders in dark mode */
-                .dark-mode .button.is-transparent {
-                    background: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
-                }
-                .dark-mode .level-item.button {
-                    background: transparent !important;
-                    border: none !important;
-                    box-shadow: none !important;
-                }
-            ` }} />
             <Plugins site={site} config={config} helper={helper} page={page} head={true} />
 
             {adsenseClientId ? <script data-ad-client={adsenseClientId}

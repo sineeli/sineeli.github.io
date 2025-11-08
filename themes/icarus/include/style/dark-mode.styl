@@ -1,0 +1,293 @@
+/* ---------------------------------
+ *         Dark Mode Styles
+ * --------------------------------- */
+
+/* Add smooth transition for theme changes */
+html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4, h5, h6, span
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease
+
+/* Dark mode base styles */
+.dark-mode
+    background: #0d1117
+    color: #c9d1d9
+
+    body
+        background: #0d1117
+        color: #c9d1d9
+
+    .navbar-main
+        background: #161b22
+        border-bottom: 1px solid #30363d
+
+    .card
+        background: #161b22
+        border: 1px solid #30363d
+        color: #c9d1d9
+
+    .footer
+        background: #161b22
+        border-top: 1px solid #30363d
+        color: #c9d1d9
+
+    /* Dark mode link colors - bright blue for better visibility */
+    a
+        color: #58a6ff
+
+        &:hover
+            color: #79c0ff
+
+    /* Dark mode text colors - ensure all text is visible */
+    .content
+        color: #c9d1d9
+
+    .title
+        color: #e6eef8
+
+    .subtitle
+        color: #c9d1d9
+
+    p, span, div
+        color: #c9d1d9
+
+    h1, h2, h3, h4, h5, h6
+        color: #e6eef8
+
+    /* Widget and card text */
+    .widget
+        .menu-label
+            color: #e6eef8
+
+        .heading
+            color: #8b949e
+
+    .card-header-title
+        color: #e6eef8
+
+    .card-content
+        color: #c9d1d9
+
+    /* Navbar items */
+    .navbar-item
+        color: #c9d1d9
+
+        &:hover
+            color: #e6eef8
+            background-color: rgba(48, 54, 61, 0.5)
+
+        &.is-active
+            color: #58a6ff
+            background-color: rgba(48, 54, 61, 0.5)
+            border-bottom: 2px solid #58a6ff
+
+    /* Metadata and dates */
+    .date, .categories, .is-size-7
+        color: #8b949e
+
+    /* Photography title/link adjustments */
+    .card .title a.has-link-black-ter
+        color: #e6eef8
+
+        &:hover
+            color: #58a6ff
+
+    /* Post title styling - blue by default, white on hover */
+    .card .title a,
+    .card .title a.link-muted
+        color: #58a6ff !important
+
+        &:hover
+            color: #fff !important
+
+    /* Post card separator line */
+    .card-content hr,
+    .content hr
+        background-color: #3a3a3a
+
+    /* Buttons and inputs */
+    .button
+        background: #21262d
+        color: #c9d1d9
+        border-color: #30363d
+
+        &:hover
+            background: #30363d
+            color: #e6eef8
+
+    input, textarea
+        background: #0d1117
+        color: #c9d1d9
+        border-color: #30363d
+
+        &::placeholder
+            color: #8b949e
+
+    /* Tags and labels */
+    .tag
+        background: #21262d
+        color: #c9d1d9
+
+    .menu-list a
+        color: #c9d1d9
+
+        &:hover
+            background: #21262d
+            color: #e6eef8
+
+    /* Notifications and messages */
+    .notification
+        background: #161b22
+        color: #c9d1d9
+
+    code
+        background: #21262d
+        color: #ff7b72
+
+    pre
+        background: #161b22
+        color: #c9d1d9
+
+    /* Timeline (archives page) */
+    .timeline
+        border-left-color: #30363d
+
+        .media:before
+            background: #30363d
+
+        .media:last-child:after
+            background: #161b22
+
+    /* Read more button and muted links */
+    .article-more
+        background: #21262d !important
+        color: #58a6ff !important
+        border-color: #30363d !important
+
+        &:hover
+            background: #30363d !important
+            color: #79c0ff !important
+            border-color: #58a6ff !important
+
+        .has-text-grey
+            color: #8b949e !important
+
+    .link-muted
+        color: #8b949e
+
+        &:hover
+            color: #58a6ff
+
+    /* Article navigation links */
+    .article-nav-prev, .article-nav-next
+        color: #8b949e
+
+        &:hover
+            color: #58a6ff
+
+    /* Code blocks in dark mode */
+    figure.highlight
+        background: #1e1e1e !important
+        border: 1px solid #404040 !important
+
+        pre
+            background: #1e1e1e !important
+            color: #d4d4d4 !important
+
+        code
+            background: #1e1e1e !important
+            color: #d4d4d4 !important
+
+        figcaption
+            background: #2d2d2d !important
+            color: #cccccc !important
+            border-bottom: 1px solid #404040
+
+        .gutter
+            background: #2d2d2d !important
+            color: #858585 !important
+
+            pre
+                color: #858585 !important
+
+        table
+            background: #1e1e1e !important
+
+    /* Inline code in dark mode */
+    .content code:not(.hljs)
+        background: #2d2d2d !important
+        color: #f8f8f2 !important
+
+    /* Article licensing in dark mode */
+    .article-licensing
+        background: #21262d !important
+        border: 1px solid #30363d !important
+
+        .licensing-title,
+        .licensing-title p
+            color: #e6eef8 !important
+
+        h6
+            color: #8b949e !important
+
+        p
+            color: #c9d1d9 !important
+
+        a
+            color: #58a6ff !important
+
+    /* Remove button box borders in dark mode */
+    .button.is-transparent
+        background: transparent !important
+        border: none !important
+        box-shadow: none !important
+
+    .level-item.button
+        background: transparent !important
+        border: none !important
+        box-shadow: none !important
+
+/* Light mode specific styles */
+.card .title a.has-link-black-ter
+    color: #111
+    transition: color 0.18s ease, transform 0.12s ease
+
+    &:hover
+        transform: translateY(-2px)
+
+.card .title a,
+.card .title a.link-muted
+    color: #58a6ff !important
+    transition: color 0.2s ease
+    transform: none !important
+
+    &:hover
+        color: #111 !important
+        transform: none !important
+
+/* Make post titles smaller */
+.card .title.is-3
+    font-size: 1.5rem !important
+
+    &.is-size-4-mobile
+        font-size: 1.25rem !important
+
++mobile()
+    .card .title.is-3.is-size-4-mobile
+        font-size: 1.1rem !important
+
+/* Make page headings (Blogs, Photography, etc.) bigger */
+.card-content > .title.is-3:first-child,
+.content > .title.is-3:first-child
+    font-size: 2.25rem !important
+
+/* Center share buttons */
+.a2a_kit
+    display: flex !important
+    justify-content: center !important
+    align-items: center !important
+
+/* Post card separator line - lighter gray */
+.card-content hr,
+.content hr
+    background-color: #e0e0e0
+    border: none
+    height: 1px
