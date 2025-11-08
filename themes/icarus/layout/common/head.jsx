@@ -82,7 +82,10 @@ module.exports = class extends Component {
                 images.push(img[1]);
             }
         } else {
-            images = [url_for('/img/og_image.png')];
+            // Do NOT use the theme default og_image.png as a fallback image for every page.
+            // When no page-specific image/thumbnail/cover is present, leave images empty so
+            // social platforms will not show the Icarus logo as the share thumbnail.
+            images = [];
         }
 
         let adsenseClientId = null;
@@ -101,6 +104,11 @@ module.exports = class extends Component {
             openGraphImages = page.photos;
         }
 
+        // Only pass images prop to OpenGraph when we actually have images.
+        const openGraphImagesProp = (Array.isArray(openGraphImages) && openGraphImages.length) || typeof openGraphImages === 'string'
+            ? openGraphImages
+            : undefined;
+
         let structuredImages = images;
         if ((typeof structured_data === 'object' && structured_data !== null)
             && ((Array.isArray(structured_data.image) && structured_data.image.length > 0) || typeof structured_data.image === 'string')) {
@@ -108,6 +116,10 @@ module.exports = class extends Component {
         } else if ((Array.isArray(page.photos) && page.photos.length > 0) || typeof page.photos === 'string') {
             structuredImages = page.photos;
         }
+
+        const structuredImagesProp = (Array.isArray(structuredImages) && structuredImages.length) || typeof structuredImages === 'string'
+            ? structuredImages
+            : undefined;
 
         let followItVerificationCode = null;
         if (Array.isArray(config.widgets)) {
@@ -141,7 +153,7 @@ module.exports = class extends Component {
                 description={open_graph.description || page.description || page.excerpt || page.content || config.description}
                 keywords={(page.tags && page.tags.length ? page.tags : undefined) || config.keywords}
                 url={open_graph.url || page.permalink || url}
-                images={openGraphImages}
+                images={openGraphImagesProp}
                 siteName={open_graph.site_name || config.title}
                 language={language}
                 twitterId={open_graph.twitter_id}
@@ -160,7 +172,7 @@ module.exports = class extends Component {
                 publisherLogo={structured_data.publisher_logo || config.logo}
                 date={page.date}
                 updated={page.updated}
-                images={structuredImages} /> : null}
+                images={structuredImagesProp} /> : null}
 
             {canonical_url ? <link rel="canonical" href={canonical_url} /> : null}
             {rss ? <link rel="alternate" href={url_for(rss)} title={config.title} type="application/atom+xml" /> : null}
