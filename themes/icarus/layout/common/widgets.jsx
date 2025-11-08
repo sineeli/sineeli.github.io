@@ -23,6 +23,10 @@ function formatWidgets(widgets) {
 
 function hasColumn(widgets, position, config, page) {
     const showToc = (config.toc === true) && ['page', 'post'].includes(page.layout);
+    // Hide both left and right sidebars on post pages
+    if (page.layout === 'post' && (position === 'left' || position === 'right')) {
+        return false;
+    }
     if (Array.isArray(widgets)) {
         return typeof widgets.find(widget => {
             if (widget.type === 'toc' && !showToc) {
@@ -70,6 +74,11 @@ class Widgets extends Component {
         const { site, config, helper, page, position } = this.props;
         const widgets = formatWidgets(config.widgets)[position] || [];
         const columnCount = getColumnCount(config.widgets, config, page);
+
+        // Hide both left and right sidebar widgets on post pages
+        if (page.layout === 'post' && (position === 'left' || position === 'right')) {
+            return null;
+        }
 
         if (!widgets.length) {
             return null;

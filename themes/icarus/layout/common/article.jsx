@@ -45,21 +45,31 @@ module.exports = class extends Component {
                     </span>}
                 </div> : null}
                 <article class={`card-content article${'direction' in page ? ' ' + page.direction : ''}`} role="article">
+                    {/* Title */}
+                    {page.title !== '' && index ? <p class="title is-3 is-size-4-mobile"><a class="link-muted" href={url_for(page.link || page.path)}>{page.title}</a></p> : null}
+                    {page.title !== '' && !index ? <h1 class="title is-3 is-size-4-mobile">{page.title}</h1> : null}
                     {/* Metadata */}
                     {page.layout !== 'page' ? <div class="article-meta is-size-7 is-uppercase level is-mobile">
-                        <div class="level-left">
+                        <div class="level-left" style={{marginBottom: '0.5rem'}}>
                             {/* Creation Date */}
-                            {page.date && <span class="level-item" dangerouslySetInnerHTML={{
-                                __html: _p('article.created_at', `<time dateTime="${date_xml(page.date)}" title="${new Date(page.date).toLocaleString()}">${date(page.date)}</time>`)
-                            }}></span>}
+                            {page.date && <span class="level-item">
+                                <i class="far fa-calendar-alt">&nbsp;</i>
+                                <time dateTime={date_xml(page.date)} title={new Date(page.date).toLocaleString()}>
+                                    {date(page.date)}
+                                </time>
+                            </span>}
                             {/* Last Update Date */}
-                            {shouldShowUpdated && <span class="level-item" dangerouslySetInnerHTML={{
-                                __html: _p('article.updated_at', `<time dateTime="${date_xml(page.updated)}" title="${new Date(page.updated).toLocaleString()}">${date(page.updated)}</time>`)
-                            }}></span>}
+                            {shouldShowUpdated && <span class="level-item is-hidden-mobile">
+                                <i class="far fa-calendar-check">&nbsp;</i>
+                                <time dateTime={date_xml(page.updated)} title={new Date(page.updated).toLocaleString()}>
+                                    {date(page.updated)}
+                                </time>
+                            </span>}
                             {/* author */}
                             {page.author ? <span class="level-item"> {page.author} </span> : null}
                             {/* Categories */}
                             {page.categories && page.categories.length ? <span class="level-item">
+                                <i class="far fa-folder-open has-text-grey"></i>&nbsp;
                                 {(() => {
                                     const categories = [];
                                     page.categories.forEach((category, i) => {
@@ -73,21 +83,20 @@ module.exports = class extends Component {
                             </span> : null}
                             {/* Read time */}
                             {article && article.readtime && article.readtime === true ? <span class="level-item">
+                                <i class="far fa-clock"></i>&nbsp;
                                 {(() => {
                                     const words = getWordCount(page._content);
                                     const time = moment.duration((words / 150.0) * 60, 'seconds');
-                                    return `${_p('article.read_time', time.locale(index ? indexLanguage : language).humanize())} (${_p('article.word_count', words)})`;
+                                    return `${time.locale(index ? indexLanguage : language).humanize()} read (About ${words} words)`;
                                 })()}
                             </span> : null}
                             {/* Visitor counter */}
-                            {!index && plugins && plugins.busuanzi === true ? <span class="level-item" id="busuanzi_container_page_pv" dangerouslySetInnerHTML={{
-                                __html: _p('plugin.visit_count', '<span id="busuanzi_value_page_pv">0</span>')
-                            }}></span> : null}
+                            {!index && plugins && plugins.busuanzi === true ? <span class="level-item" id="busuanzi_container_page_pv">
+                                <i class="far fa-eye"></i>&nbsp;
+                                <span id="busuanzi_value_page_pv">0</span>&nbsp;visits
+                            </span> : null}
                         </div>
                     </div> : null}
-                    {/* Title */}
-                    {page.title !== '' && index ? <p class="title is-3 is-size-4-mobile"><a class="link-muted" href={url_for(page.link || page.path)}>{page.title}</a></p> : null}
-                    {page.title !== '' && !index ? <h1 class="title is-3 is-size-4-mobile">{page.title}</h1> : null}
                     {/* Content/Excerpt */}
                     <div class="content" dangerouslySetInnerHTML={{ __html: index && page.excerpt ? page.excerpt : page.content }}></div>
                     {/* Licensing block */}
@@ -107,7 +116,7 @@ module.exports = class extends Component {
                 </article>
             </div>
             {/* Donate button */}
-            {!index ? <Donates config={config} helper={helper} /> : null}
+            {/* {!index ? <Donates config={config} helper={helper} /> : null} */}
             {/* Post navigation */}
             {!index && (page.prev || page.next) ? <nav class="post-navigation mt-4 level is-mobile">
                 {page.prev ? <div class="level-start">
@@ -124,7 +133,7 @@ module.exports = class extends Component {
                 </div> : null}
             </nav> : null}
             {/* Comment */}
-            {!index ? <Comment config={config} page={page} helper={helper} /> : null}
+            {/* {!index ? <Comment config={config} page={page} helper={helper} /> : null} */}
         </Fragment>;
     }
 };
