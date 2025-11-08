@@ -105,9 +105,11 @@ module.exports = class extends Component {
         }
 
         // Only pass images prop to OpenGraph when we actually have images.
+        // Ensure we pass an array (possibly empty) to OpenGraph so the component
+        // never receives undefined and attempts to parse it.
         const openGraphImagesProp = (Array.isArray(openGraphImages) && openGraphImages.length) || typeof openGraphImages === 'string'
             ? openGraphImages
-            : undefined;
+            : [];
 
         let structuredImages = images;
         if ((typeof structured_data === 'object' && structured_data !== null)
@@ -119,7 +121,7 @@ module.exports = class extends Component {
 
         const structuredImagesProp = (Array.isArray(structuredImages) && structuredImages.length) || typeof structuredImages === 'string'
             ? structuredImages
-            : undefined;
+            : [];
 
         let followItVerificationCode = null;
         if (Array.isArray(config.widgets)) {
