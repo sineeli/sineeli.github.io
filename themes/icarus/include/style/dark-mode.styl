@@ -284,6 +284,20 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
     display: flex !important
     justify-content: center !important
     align-items: center !important
+    min-height: 32px
+    margin-top: 1rem
+    
+    /* Show placeholders before script loads */
+    a
+        display: inline-block
+        width: 32px
+        height: 32px
+        margin: 0 4px
+        background-color: #0166ff
+        border-radius: 4px
+        
+        &:hover
+            opacity: 0.8
 
 /* Post card separator line - lighter gray */
 .card-content hr,

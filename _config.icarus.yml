@@ -48,7 +48,7 @@ head:
         url: 
         # Page cover (og:image) (optional)
         # You should leave this blank for most of the time
-        image: 
+        image: /img/logo.svg 
         # Site name (og:site_name) (optional)
         # You should leave this blank for most of the time
         site_name: 
@@ -93,7 +93,7 @@ head:
         publisher_logo: 
         # Page images (optional)
         # You should leave this blank for most of the time
-        image: 
+        image: /img/logo.svg 
     # Additional HTML meta tags in an array
     meta:
         # Meta tag specified in <attribute>=<value> style
