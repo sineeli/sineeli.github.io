@@ -13,6 +13,20 @@ const { cacheComponent } = require('hexo-component-inferno/lib/util/cache');
  * <AddToAny />
  */
 class AddToAny extends Component {
+    componentDidMount() {
+        // Initialize AddToAny after component mounts
+        if (typeof window !== 'undefined' && window.a2a) {
+            window.a2a.init_all();
+        }
+    }
+
+    componentDidUpdate() {
+        // Reinitialize when component updates
+        if (typeof window !== 'undefined' && window.a2a) {
+            window.a2a.init_all();
+        }
+    }
+
     render() {
         return <Fragment>
             <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="" data-a2a-title="">
@@ -25,7 +39,21 @@ class AddToAny extends Component {
                 <a class="a2a_button_whatsapp"></a>
                 <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share"></a>
             </div>
-            <script src="https://static.addtoany.com/menu/page.js"></script>
+            <script dangerouslySetInnerHTML={{
+                __html: `
+                    (function() {
+                        if (!window.a2aScriptLoaded) {
+                            window.a2aScriptLoaded = true;
+                            var script = document.createElement('script');
+                            script.async = true;
+                            script.src = 'https://static.addtoany.com/menu/page.js';
+                            document.head.appendChild(script);
+                        } else if (window.a2a) {
+                            window.a2a.init_all();
+                        }
+                    })();
+                `
+            }} />
         </Fragment>;
     }
 }
