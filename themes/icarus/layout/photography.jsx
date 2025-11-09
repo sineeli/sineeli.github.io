@@ -1,45 +1,16 @@
-const { Component, Fragment } = require('inferno');
-const PostCard = require('./common/post-card');
+const { Component } = require('inferno');
+const CategoryPosts = require('./common/category-posts');
 
 module.exports = class extends Component {
     render() {
-    const { site, helper, page } = this.props;
-    const { url_for, date, date_xml } = helper;
+        const { site, helper, config, page } = this.props;
 
-        // collect posts array
-        let allPosts = [];
-        if (site && site.posts) {
-            if (typeof site.posts.toArray === 'function') {
-                allPosts = site.posts.toArray();
-            } else if (Array.isArray(site.posts)) {
-                allPosts = site.posts;
-            }
-        }
-
-        // filter posts that are photography (category or tag)
-        const photosPosts = allPosts.filter(p => {
-            try {
-                const cats = (p.categories || []).map(c => (c && (c.name || c)).toString().toLowerCase());
-                const tags = (p.tags || []).map(t => (t && (t.name || t)).toString().toLowerCase());
-                return cats.includes('photography') || tags.includes('photography');
-            } catch (e) {
-                return false;
-            }
-        });
-
-        return <Fragment>
-            {photosPosts.length ? photosPosts.map(post => (
-                <PostCard 
-                    key={post.path}
-                    config={this.props.config}
-                    page={post}
-                    helper={helper}
-                />
-            )) : <div class="card">
-                <div class="card-content">
-                    <p>No photography posts yet.</p>
-                </div>
-            </div>}
-        </Fragment>;
+        return <CategoryPosts 
+            site={site}
+            helper={helper}
+            config={config}
+            categoryName="photography"
+            emptyMessage="No photography posts yet."
+        />;
     }
 };

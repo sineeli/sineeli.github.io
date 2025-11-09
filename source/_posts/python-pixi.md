@@ -5,6 +5,8 @@ categories: blogs
 tags:
   - python
   - pixi
+toc: true
+layout: post
 ---
 
 <!-- more -->

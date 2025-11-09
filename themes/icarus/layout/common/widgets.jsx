@@ -23,8 +23,8 @@ function formatWidgets(widgets) {
 
 function hasColumn(widgets, position, config, page) {
     const showToc = (config.toc === true) && ['page', 'post'].includes(page.layout);
-    // Hide both left and right sidebars on post pages
-    if (page.layout === 'post' && (position === 'left' || position === 'right')) {
+    // Hide only right sidebar on post pages, show full left sidebar
+    if (page.layout === 'post' && position === 'right') {
         return false;
     }
     if (Array.isArray(widgets)) {
@@ -42,7 +42,12 @@ function getColumnCount(widgets, config, page) {
     return [hasColumn(widgets, 'left', config, page), hasColumn(widgets, 'right', config, page)].filter(v => !!v).length + 1;
 }
 
-function getColumnSizeClass(columnCount) {
+function getColumnSizeClass(columnCount, page, position) {
+    // Special sizing for post pages with only left sidebar
+    if (page && page.layout === 'post' && columnCount === 2 && position === 'left') {
+        return 'is-4-tablet is-4-desktop is-3-widescreen';
+    }
+    
     switch (columnCount) {
         case 2:
             return 'is-4-tablet is-4-desktop is-4-widescreen';
@@ -75,24 +80,29 @@ class Widgets extends Component {
         const widgets = formatWidgets(config.widgets)[position] || [];
         const columnCount = getColumnCount(config.widgets, config, page);
 
-        // Hide both left and right sidebar widgets on post pages
-        if (page.layout === 'post' && (position === 'left' || position === 'right')) {
+        // Hide only right sidebar on post pages
+        if (page.layout === 'post' && position === 'right') {
             return null;
         }
 
-        if (!widgets.length) {
+        // On post pages, show only TOC widget in left sidebar
+        const filteredWidgets = page.layout === 'post' && position === 'left'
+            ? widgets.filter(widget => widget.type === 'toc')
+            : widgets;
+
+        if (!filteredWidgets.length) {
             return null;
         }
 
         return <div class={classname({
             'column': true,
             ['column-' + position]: true,
-            [getColumnSizeClass(columnCount)]: true,
+            [getColumnSizeClass(columnCount, page, position)]: true,
             [getColumnVisibilityClass(columnCount, position)]: true,
             [getColumnOrderClass(position)]: true,
             'is-sticky': isColumnSticky(config, position)
         })}>
-            {widgets.map(widget => {
+            {filteredWidgets.map(widget => {
                 // widget type is not defined
                 if (!widget.type) {
                     return null;

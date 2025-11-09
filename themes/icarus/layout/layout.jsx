@@ -14,11 +14,14 @@ module.exports = class extends Component {
         const language = page.lang || page.language || config.language;
         let columnCount = Widgets.getColumnCount(config.widgets, config, page);
         
-        // Adjust column count for post pages (hide both sidebars)
+        // Adjust column count for post pages (show only left sidebar with TOC)
+        let isPostWithLeftSidebar = false;
         if (page.layout === 'post' && columnCount === 3) {
-            columnCount = 1;
+            columnCount = 2;
+            isPostWithLeftSidebar = true;
         } else if (page.layout === 'post' && columnCount === 2) {
-            columnCount = 1;
+            columnCount = 2;
+            isPostWithLeftSidebar = true;
         }
 
         return <html lang={language ? language.substr(0, 2) : ''}>
@@ -33,7 +36,8 @@ module.exports = class extends Component {
                                 'order-2': true,
                                 'column-main': true,
                                 'is-12': columnCount === 1,
-                                'is-8-tablet is-8-desktop is-8-widescreen': columnCount === 2,
+                                'is-8-tablet is-8-desktop is-9-widescreen': isPostWithLeftSidebar,
+                                'is-8-tablet is-8-desktop is-8-widescreen': columnCount === 2 && !isPostWithLeftSidebar,
                                 'is-8-tablet is-8-desktop is-6-widescreen': columnCount === 3
                             })} dangerouslySetInnerHTML={{ __html: body }}></div>
                             <Widgets site={site} config={config} helper={helper} page={page} position={'left'} />
