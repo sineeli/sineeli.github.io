@@ -19,6 +19,12 @@ This helps keep production environments clean by excluding unnecessary packages.
 
 You can also define reusable tasks and run them with `pixi run <task-name>`. This is a convenient way to run common commands defined in `pyproject.toml`.
 
+## Installing Pixi
+
+```bash
+pip install pixi
+```
+
 ## How to use Pixi for running a task
 pixi.toml
 
