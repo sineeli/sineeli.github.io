@@ -10,19 +10,34 @@ $navbar-item-margin-h ?= 0
     box-shadow: $shadow
 
     .navbar-container
-        overflow-x: auto
+        display: flex
+        flex-wrap: wrap
+        align-items: stretch
 
     .navbar-brand
+        display: flex
+        align-items: center
+        flex-shrink: 0
+
         .navbar-burger
+            display: none
             color: inherit
+            cursor: pointer
+            height: 3.25rem
+            width: 3.25rem
             margin-left: auto
+            position: relative
+            align-items: center
+            justify-content: center
 
             span
                 background-color: currentColor
+                display: block
                 height: 1px
                 left: calc(50% - 8px)
                 position: absolute
                 width: 16px
+                transition: all 0.15s ease-out
 
                 &:nth-child(1)
                     top: calc(50% - 6px)
@@ -42,26 +57,33 @@ $navbar-item-margin-h ?= 0
             &.is-active span:nth-child(3)
                 transform: translateY(-5px) rotate(-45deg)
 
-    // Desktop: show menu inline
+    // Desktop: show menu inline, hide burger
     +from($desktop)
         .navbar-burger
-            display: none
-
-        .navbar-menu, .navbar-start, .navbar-end
-            align-items: stretch
-            display: flex
-            padding: 0
-            flex-shrink: 0
+            display: none !important
 
         .navbar-menu
+            display: flex !important
+            align-items: stretch
             flex-grow: 1
             flex-shrink: 0
-            overflow-x: auto
 
-    // Mobile/Tablet: hide menu by default, show when active
+        .navbar-start, .navbar-end
+            display: flex
+            align-items: stretch
+
+    // Mobile/Tablet: show burger, hide menu by default
     +until($desktop)
+        .navbar-brand
+            width: 100%
+            justify-content: space-between
+
+        .navbar-burger
+            display: flex !important
+
         .navbar-menu
             display: none
+            width: 100%
             flex-direction: column
             padding: 0.5rem 0
             background: inherit
@@ -74,7 +96,7 @@ $navbar-item-margin-h ?= 0
             flex-direction: column
 
         .navbar-item
-            padding: 0.5rem 1rem
+            padding: 0.75rem 1rem
 
     .navbar-start
         justify-content: flex-start
