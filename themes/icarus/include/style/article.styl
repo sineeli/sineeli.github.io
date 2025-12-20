@@ -54,6 +54,27 @@ article
             word-wrap: break-word
             font-size: $article-font-size
 
+            // Responsive images - ensure proper sizing on all devices
+            img
+                max-width: 100%
+                height: auto
+                display: block
+                margin: 1rem auto
+
+            // Images in divs with text-align center
+            div[style*="text-align"]
+                img
+                    max-width: 100%
+                    height: auto
+
+            // Figures and figure images
+            figure
+                margin: 1rem 0
+                
+                img
+                    max-width: 100%
+                    height: auto
+
             h1
                 font-size: 1.75em
 

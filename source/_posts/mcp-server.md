@@ -148,14 +148,14 @@ python mcp_server.py
 ```
 
 <div style="text-align:center;">
-<img src="mcp-server.png" alt="MCP Server Running" style="max-width:800px; height:auto;" />
+<img src="mcp-server.png" alt="MCP Server Running" style="max-width:100%; width:800px; height:auto;" />
 </div>
 
 ---
 You can also inspect the available tools by running `fastmcp dev mcp_server.py` and it will start an inspector server at `http://127.0.0.1:6274`. You will see the token attached to the URL in the terminal. Basically, here you can test the tools directly from the browser, given the input parameters.
 
 <div style="text-align:center;">
-<img src="mcp-inspector.png" alt="MCP Server Inspector" style="max-width:800px; height:auto;" />
+<img src="mcp-inspector.png" alt="MCP Server Inspector" style="max-width:100%; width:800px; height:auto;" />
 </div>
 
 ---
@@ -387,5 +387,5 @@ Breakdown:
 ```
 
 <div style="text-align:center;">
-<img src="tool-calls.png" alt="MCP Tool Calls" style="max-width:800px; height:auto;" />
+<img src="tool-calls.png" alt="MCP Tool Calls" style="max-width:100%; width:800px; height:auto;" />
 </div>
