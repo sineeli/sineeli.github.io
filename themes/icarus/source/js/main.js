@@ -48,6 +48,13 @@
     adjustNavbar();
     $(window).resize(adjustNavbar);
 
+    // Mobile navbar burger toggle
+    $('.navbar-burger').on('click', function() {
+        const target = $(this).data('target');
+        $(this).toggleClass('is-active');
+        $('#' + target).toggleClass('is-active');
+    });
+
     function toggleFold(codeBlock, isFolded) {
         const $toggle = $(codeBlock).find('.fold i');
         !isFolded ? $(codeBlock).removeClass('folded') : $(codeBlock).addClass('folded');

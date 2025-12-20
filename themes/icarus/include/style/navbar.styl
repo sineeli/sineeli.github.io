@@ -12,16 +12,69 @@ $navbar-item-margin-h ?= 0
     .navbar-container
         overflow-x: auto
 
-    .navbar-menu, .navbar-start, .navbar-end
-        align-items: stretch
-        display: flex
-        padding: 0
-        flex-shrink: 0
+    .navbar-brand
+        .navbar-burger
+            color: inherit
+            margin-left: auto
 
-    .navbar-menu
-        flex-grow: 1
-        flex-shrink: 0
-        overflow-x: auto
+            span
+                background-color: currentColor
+                height: 1px
+                left: calc(50% - 8px)
+                position: absolute
+                width: 16px
+
+                &:nth-child(1)
+                    top: calc(50% - 6px)
+
+                &:nth-child(2)
+                    top: calc(50% - 1px)
+
+                &:nth-child(3)
+                    top: calc(50% + 4px)
+
+            &.is-active span:nth-child(1)
+                transform: translateY(5px) rotate(45deg)
+
+            &.is-active span:nth-child(2)
+                opacity: 0
+
+            &.is-active span:nth-child(3)
+                transform: translateY(-5px) rotate(-45deg)
+
+    // Desktop: show menu inline
+    +from($desktop)
+        .navbar-burger
+            display: none
+
+        .navbar-menu, .navbar-start, .navbar-end
+            align-items: stretch
+            display: flex
+            padding: 0
+            flex-shrink: 0
+
+        .navbar-menu
+            flex-grow: 1
+            flex-shrink: 0
+            overflow-x: auto
+
+    // Mobile/Tablet: hide menu by default, show when active
+    +until($desktop)
+        .navbar-menu
+            display: none
+            flex-direction: column
+            padding: 0.5rem 0
+            background: inherit
+
+            &.is-active
+                display: block
+
+        .navbar-start, .navbar-end
+            display: flex
+            flex-direction: column
+
+        .navbar-item
+            padding: 0.5rem 1rem
 
     .navbar-start
         justify-content: flex-start
@@ -39,17 +92,6 @@ $navbar-item-margin-h ?= 0
 
         &.is-active
             background-color: transparent
-
-    +until($navbar-breakpoint)
-        .navbar-menu
-            justify-content: center
-            box-shadow: none
-
-        .navbar-start
-            margin-right: 0
-
-        .navbar-end
-            margin-left: 0
 
 .navbar-logo
     img

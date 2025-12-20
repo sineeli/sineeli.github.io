@@ -45,8 +45,14 @@ class Navbar extends Component {
                     <a class="navbar-item navbar-logo" href={siteUrl}>
                         {navbarLogo}
                     </a>
+                    {/* Hamburger menu for mobile */}
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar-menu">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
                 </div>
-                <div class="navbar-menu">
+                <div id="navbar-menu" class="navbar-menu">
                     {Object.keys(menu).length ? <div class="navbar-start">
                         {Object.keys(menu).map(name => {
                             const item = menu[name];
