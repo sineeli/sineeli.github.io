@@ -385,6 +385,10 @@ Breakdown:
 - 33273.3 − 4 = 33269.3
 - 33269.3 ÷ 26 ≈ 1279.5884615384615
 ```
+### 📊 Inspecting Tool Calls
+
+1. If you check the MCP server logs, you can check the order of tool calls made by the agent. The order in which you asked agent to perform operations is preserved in the tool calls. 
+2. Also you get much more control over the result as you can the floating point precision in the tool implementations.
 
 <div style="text-align:center;">
 <img src="tool-calls.png" alt="MCP Tool Calls" style="max-width:100%; width:800px; height:auto;" />
