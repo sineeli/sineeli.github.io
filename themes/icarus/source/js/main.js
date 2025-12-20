@@ -20,9 +20,14 @@
         $('.justified-gallery').justifiedGallery();
     }
 
+    // Format dates as proper dates (not relative "X hours ago")
     if (typeof moment === 'function') {
         $('.article-meta time').each(function() {
-            $(this).text(moment($(this).attr('datetime')).fromNow());
+            const dateStr = $(this).attr('datetime');
+            if (dateStr) {
+                // Format: "December 20, 2025"
+                $(this).text(moment(dateStr).format('MMMM D, YYYY'));
+            }
         });
     }
 

@@ -22,18 +22,39 @@ You can also define reusable tasks and run them with `pixi run <task-name>`. Thi
 ## Installing Pixi
 
 ```bash
-pip install pixi
+brew install pixi # macOS
+# or
+curl -fsSL https://pixi.sh/install.sh | sh
 ```
 
 ## How to use Pixi for running a task
-pixi.toml
+`pyproject.toml`
 
 ```toml
-[tasks]
-# Format code (black)
-format = "black src/"
-# Lint (ruff)
-lint = "ruff src/ --fix"
+[project]
+name = ""
+version = "0.1.0"
+description = ""
+requires-python = "==3.12"
+authors = [{ name = "<author>", email = "<email-address>" }]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64"]
+
+[tool.pixi.dependencies]
+python = "3.12.*"
+
+[tool.pixi.pypi-dependencies]
+openai = "*"
+openai-agents = "*"
+fastmcp = "*"
+pytest = "*"
+ruff = "*"
+pyright = "*"
+mypy = "==1.18.2"
+
+[tool.pixi.tasks]
 ```
 
 Quick add commands:
