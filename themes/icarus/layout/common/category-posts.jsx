@@ -31,6 +31,13 @@ module.exports = class CategoryPosts extends Component {
             }
         });
 
+        // Sort posts by date (newest first)
+        filteredPosts.sort((a, b) => {
+            const dateA = a.date ? new Date(a.date) : new Date(0);
+            const dateB = b.date ? new Date(b.date) : new Date(0);
+            return dateB - dateA;
+        });
+
         return <Fragment>
             {filteredPosts.length ? filteredPosts.map(post => (
                 <PostCard 

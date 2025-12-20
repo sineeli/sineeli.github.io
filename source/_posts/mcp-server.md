@@ -149,14 +149,13 @@ python mcp_server.py
 
 <div style="text-align:center;">
 <img src="mcp-server.png" alt="MCP Server Running" style="max-width:800px; height:auto;" />
-<p><em>MCP Server Running</em></p>
 </div>
 
+---
 You can also inspect the available tools by running `fastmcp dev mcp_server.py` and it will start an inspector server at `http://127.0.0.1:6274`. You will see the token attached to the URL in the terminal. Basically, here you can test the tools directly from the browser, given the input parameters.
 
 <div style="text-align:center;">
 <img src="mcp-inspector.png" alt="MCP Server Inspector" style="max-width:800px; height:auto;" />
-<p><em>MCP Server Inspector</em></p>
 </div>
 
 ---
@@ -227,8 +226,7 @@ MODEL_NAME = "gpt-5-nano"
 # Option 2: Using Ollama (Free) - Local models, no API key required
 # Make sure Ollama is running: ollama serve
 # And you have pulled a model: ollama pull llama3.2
-OPENAI_API_KEY = "ollama"
-MCP_SERVER_URL = "http://localhost:8000/mcp"
+# OPENAI_API_KEY = "ollama"
 # BASE_URL = "http://localhost:11434/v1"  # Ollama server URL
 # MODEL_NAME = "llama3.2"  # or use mistral, neural-chat, etc.
 
@@ -259,29 +257,22 @@ Initialize the MCP server connection and the language model client.
 * **Model**: Initialized using `OpenAIChatCompletionsModel`.
 
 ```python
-async def initialize_resources():
-    """Initializes the MCP server connection and Ollama/OpenAI client."""
+async def initialize_agent() -> tuple[MCPServerStreamableHttp, OpenAIChatCompletionsModel]:
+    """Initializes the MCP server, OpenAI client, and Agent."""
     console.print(f"[bold blue]Connecting to MCP Server at {MCP_SERVER_URL}...[/bold blue]")
-    
-    # Create the MCP Server connection manager
-    # We use 'url' parameter for Streamable HTTP transport
+
     mcp_server_cm = MCPServerStreamableHttp(
         params={"url": MCP_SERVER_URL},
         cache_tools_list=True, # Cache the tools list for performance so we don't fetch it every time
     )
-    
-    # Initialize OpenAI-compatible Client (works with both OpenAI and Ollama)
+
     openai_client = AsyncClient(
         api_key=OPENAI_API_KEY,
-        # base_url=BASE_URL,
+        # base_url="http://localhost:11434/v1",
         timeout=60,
     )
-    
-    # Initialize the Model
-    model = OpenAIChatCompletionsModel(
-        model=MODEL_NAME,
-        openai_client=openai_client
-    )
+
+    model = OpenAIChatCompletionsModel(model="gpt-5-nano", openai_client=openai_client)
 
     return mcp_server_cm, model
 ```
@@ -294,24 +285,21 @@ Manages a single conversation turn with the agent.
 * **Result**: Once the runner completes, extract the final output and return it.
 
 ```python
-async def chat_turn(agent, history, user_input):
+async def chat_turn(
+    agent: Agent,
+    history: list[dict[str, str]],
+    user_input: str,
+) -> str | None:
     """Handles a single turn of conversation."""
-    # Add user message to history
     history.append({"role": "user", "content": user_input})
-    
+
     try:
-        # Show a spinner while the agent thinks and calls tools
         with console.status("[bold green]Thinking...[/bold green]", spinner="dots"):
-            result = await Runner.run(
-                starting_agent=agent,
-                input=history 
-            )
-        
+            result = await Runner.run(starting_agent=agent, input=history)
+
         final_text = result.final_output
-        
-        # Add assistant response to history
         history.append({"role": "assistant", "content": final_text})
-        
+
         return final_text
     except Exception as e:
         console.print(f"[bold red]Error during turn:[/bold red] {e}")
@@ -327,64 +315,49 @@ Create the agent with the model, MCP server connection, and instructions.
 * **Internal Conversion**: All MCP tools are converted to function calling format that the model understands.
 
 ```python
-async def main():
-    # 1. Initialize Resources
-    mcp_server_cm, model = await initialize_resources()
-    
-    # 2. Connect to MCP Server
+async def main() -> None:
+    mcp_server_cm, model = await initialize_agent()
+
     async with mcp_server_cm as mcp_server:
-        # 3. Create the Agent
         agent = Agent(
-            name="MCP_Assistant",
+            name="MCP_Agent",
             model=model,
             mcp_servers=[mcp_server],
-            model_settings=ModelSettings(
-                tool_choice="auto" # Let the model decide when to use tools
-            ),
+            model_settings=ModelSettings(tool_choice="auto"),
             instructions="""
-                You are an intelligent agent that uses the to perform calculations as needed.
-                Always choose the appropriate tool for mathematical operations.
-                call `add` to add two numbers float values.
-                call `subtract` to subtract two numbers float values.
-                call `multiply` to multiply two numbers float values.
-                call `divide` to divide two numbers float values.
-            """
+            You are an intelligent agent that uses the to perform calculations as needed.
+            Always choose the appropriate tool for mathematical operations.
+            call `add` to add two numbers float values.
+            call `subtract` to subtract two numbers float values.
+            call `multiply` to multiply two numbers float values.
+            call `divide` to divide two numbers float values.
+            """,
         )
-        
-        console.print(Panel.fit("[bold green]Agent Ready[/bold green] (Type 'quit' to exit)", title="System"))
-        chat_history = []
-```
 
-### 🔄 Chat Loop
+        console.print(
+            Panel.fit(
+                "[bold green]Agent Ready[/bold green] (Type 'stop' or 'close' to exit)",
+                title="System",
+            )
+        )
+        chat_history: list[dict] = []
 
-Interactive loop that processes user input and displays agent responses.
-
-* **Flow**: Accepts user input → Processes with agent → Displays response → Repeat.
-* **Exit**: Type 'quit', 'exit', or 'stop' to end the conversation.
-
-```python
-        # 4. Chat Loop
         while True:
             user_input = console.input("\n[bold yellow]You:[/bold yellow] ").strip()
-            
-            if user_input.lower() in ["quit", "exit", "stop"]:
+
+            if user_input.lower() in ["stop", "close", "exit", "quit"]:
                 console.print("[bold red]Goodbye![/bold red]")
                 break
-            
-            if not user_input:
-                continue
 
             response = await chat_turn(agent, chat_history, user_input)
-            
+
             if response:
                 console.print("\n[bold cyan]Agent:[/bold cyan]")
                 console.print(Markdown(response))
 
+
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        console.print("\n[bold red]Exiting...[/bold red]")
+    asyncio.run(main())
 ```
 
 ---
@@ -415,5 +388,4 @@ Breakdown:
 
 <div style="text-align:center;">
 <img src="tool-calls.png" alt="MCP Tool Calls" style="max-width:800px; height:auto;" />
-<p><em>MCP Tool Calls</em></p>
 </div>

@@ -113,9 +113,9 @@ navbar:
         Tags: /tags
     # Links to be shown on the right of the navigation bar
     links:
-        Download on GitHub:
+        GitHub:
             icon: fab fa-github
-            url: https://github.com/ppoffice/hexo-theme-icarus
+            url: https://github.com/sineeli
     # Enable dark mode toggle
     dark_mode_toggle: true
 # Page footer configurations
@@ -128,9 +128,9 @@ footer:
         Attribution 4.0 International:
             icon: fab fa-creative-commons-by
             url: https://creativecommons.org/licenses/by/4.0/
-        Download on GitHub:
+        GitHub:
             icon: fab fa-github
-            url: https://github.com/ppoffice/hexo-theme-icarus
+            url: https://github.com/sineeli
 # Article related configurations
 article:
     # Code highlight settings

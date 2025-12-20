@@ -18,6 +18,8 @@
     --footer-bg: #fafafa
     --code-bg: #f5f5f5
     --highlight-bg: #fafafa
+    --mark-bg: #fff59d
+    --mark-color: #000000
 
 .dark-mode
     --bg-primary: #0d1117
@@ -34,16 +36,22 @@
     --footer-bg: #161b22
     --code-bg: #21262d
     --highlight-bg: #1e1e1e
+    --mark-bg: #634d00
+    --mark-color: #f0e68c
 
-/* Add smooth transition for theme changes */
-html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4, h5, h6, span
+/* Smooth transition for theme changes */
+html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4, h5, h6, span, blockquote, code, pre, table, th, td
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease
 
-/* Dark mode base styles */
+/* =============================================
+   DARK MODE - All styles scoped under .dark-mode
+   ============================================= */
+
 .dark-mode
     background: var(--bg-primary)
     color: var(--text-primary)
 
+    /* Global border color override */
     *, *::before, *::after
         border-color: var(--border-color)
 
@@ -51,6 +59,7 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
         background: var(--bg-primary)
         color: var(--text-primary)
 
+    /* ----- Layout Components ----- */
     .navbar-main
         background: var(--navbar-bg)
         border-bottom: 1px solid var(--border-color)
@@ -65,241 +74,712 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
         border-top: 1px solid var(--border-color)
         color: var(--text-primary)
 
-    /* Dark mode link colors - bright blue for better visibility */
+    /* ----- Links ----- */
     a
-        color: #58a6ff
+        color: var(--link-color)
 
         &:hover
-            color: #79c0ff
+            color: var(--link-hover)
 
-    /* Dark mode text colors - ensure all text is visible */
-    .content
-        color: #c9d1d9
-
+    /* ----- Typography ----- */
     .title
-        color: #e6eef8
+        color: #e6eef8 !important
 
     .subtitle
-        color: #c9d1d9
-
-    p, span, div
-        color: #c9d1d9
+        color: var(--text-primary)
 
     h1, h2, h3, h4, h5, h6
-        color: #e6eef8
+        color: #e6eef8 !important
 
-    /* Widget and card text */
-    .widget
-        .menu-label
-            color: #e6eef8
+    p, span, li
+        color: var(--text-primary)
 
-        .heading
-            color: #8b949e
+    /* ----- Content Area (Article/Post Body) ----- */
+    .content
+        color: var(--text-primary)
 
-    .card-header-title
-        color: #e6eef8
+        /* Headings inside content */
+        h1, h2, h3, h4, h5, h6
+            color: #e6eef8 !important
 
-    .card-content
-        color: #c9d1d9
+        /* Paragraphs and text */
+        p, li, span
+            color: var(--text-primary) !important
 
-    /* Navbar items */
-    .navbar-item
-        color: #c9d1d9
+        /* Bold text */
+        strong, b
+            color: #e6eef8 !important
+            font-weight: 700
 
-        &:hover
-            color: #e6eef8
-            background-color: rgba(48, 54, 61, 0.5)
+        /* Italic text */
+        em, i
+            color: var(--text-primary)
 
-        &.is-active
-            color: #58a6ff
-            background-color: rgba(48, 54, 61, 0.5)
-            border-bottom: 2px solid #58a6ff
+        /* Links in content */
+        a
+            color: var(--link-color) !important
 
-    /* Metadata and dates */
-    .date, .categories, .is-size-7
-        color: #8b949e
+            &:hover
+                color: var(--link-hover) !important
 
-    /* Photography title/link adjustments */
-    .card .title a.has-link-black-ter
-        color: #e6eef8
+        /* ----- Blockquotes ----- */
+        blockquote
+            background: var(--bg-tertiary) !important
+            border-left: 5px solid var(--border-color) !important
+            color: var(--text-primary) !important
 
-        &:hover
-            color: #58a6ff
+            p, span, strong, em, a, code
+                color: var(--text-primary) !important
 
-    /* Post title styling - blue by default, white on hover */
-    .card .title a,
-    .card .title a.link-muted
-        color: #58a6ff !important
+            strong, b
+                color: #e6eef8 !important
+                font-weight: 700
 
-        &:hover
-            color: #fff !important
+            code
+                background: var(--code-bg) !important
+                color: #ff7b72 !important
+                padding: 0.15em 0.4em !important
 
-    /* Post card separator line */
-    .card-content hr,
-    .content hr
-        background-color: #3a3a3a
+        /* ----- Inline Code ----- */
+        code:not(.hljs)
+            background: var(--code-bg) !important
+            color: #ff7b72 !important
+            padding: 0.15em 0.4em
+            border-radius: 3px
 
-    /* Buttons and inputs */
-    .button
-        background: #21262d
-        color: #c9d1d9
-        border-color: #30363d
+        /* ----- Pre/Code blocks ----- */
+        pre
+            background: var(--highlight-bg) !important
+            color: var(--text-primary) !important
 
-        &:hover
-            background: #30363d
-            color: #e6eef8
+            code
+                background: transparent !important
+                color: inherit !important
 
-    input, textarea
-        background: #0d1117
-        color: #c9d1d9
-        border-color: #30363d
+        /* ----- Horizontal Rules ----- */
+        hr
+            background-color: var(--border-color) !important
+            border: none
+            height: 1px
 
-        &::placeholder
-            color: #8b949e
+        /* ----- Tables ----- */
+        table
+            background: var(--bg-secondary) !important
 
-    /* Tags and labels */
-    .tag
-        background: #21262d
-        color: #c9d1d9
+            th
+                background: var(--bg-tertiary) !important
+                color: #e6eef8 !important
+                border-color: var(--border-color) !important
 
-    .menu-list a
-        color: #c9d1d9
+            td
+                background: var(--bg-secondary) !important
+                color: var(--text-primary) !important
+                border-color: var(--border-color) !important
 
-        &:hover
-            background: #21262d
-            color: #e6eef8
+            tr:nth-child(even) td
+                background: var(--bg-tertiary) !important
 
-    /* Notifications and messages */
-    .notification
-        background: #161b22
-        color: #c9d1d9
+        /* ----- Highlighted/Marked Text ----- */
+        mark
+            background: var(--mark-bg) !important
+            color: var(--mark-color) !important
+            padding: 0.1em 0.3em
+            border-radius: 2px
 
-    code
-        background: #21262d
-        color: #ff7b72
+        /* ----- Keyboard Input ----- */
+        kbd
+            background: var(--bg-tertiary) !important
+            color: var(--text-primary) !important
+            border: 1px solid var(--border-color) !important
+            border-radius: 3px
+            padding: 0.1em 0.4em
+            font-family: monospace
+            box-shadow: 0 1px 0 var(--border-color)
 
-    pre
-        background: #161b22
-        color: #c9d1d9
+        /* ----- Definition Lists ----- */
+        dl
+            dt
+                color: #e6eef8 !important
+                font-weight: 600
 
-    /* Timeline (archives page) */
-    .timeline
-        border-left-color: #30363d
+            dd
+                color: var(--text-primary) !important
 
-        .media:before
-            background: #30363d
+        /* ----- Ordered/Unordered Lists ----- */
+        ul, ol
+            color: var(--text-primary)
 
-        .media:last-child:after
-            background: #161b22
+            li
+                color: var(--text-primary) !important
 
-    /* Read more button and muted links */
-    .article-more
-        background: #21262d !important
-        color: #58a6ff !important
-        border-color: #30363d !important
+                &::marker
+                    color: var(--text-secondary)
 
-        &:hover
-            background: #30363d !important
-            color: #79c0ff !important
-            border-color: #58a6ff !important
+        /* ----- Abbreviations ----- */
+        abbr
+            color: var(--text-primary) !important
+            border-bottom: 1px dotted var(--text-secondary)
 
-        .has-text-grey
-            color: #8b949e !important
+        /* ----- Subscript/Superscript ----- */
+        sub, sup
+            color: var(--text-primary) !important
 
-    .link-muted
-        color: #8b949e
+        /* ----- Deleted/Inserted Text ----- */
+        del, s
+            color: var(--text-secondary) !important
 
-        &:hover
-            color: #58a6ff
+        ins
+            color: var(--text-primary) !important
+            text-decoration: underline
 
-    /* Article navigation links */
-    .article-nav-prev, .article-nav-next
-        color: #8b949e
+        /* ----- Images ----- */
+        img
+            opacity: 0.95
 
-        &:hover
-            color: #58a6ff
+        figcaption
+            color: var(--text-secondary) !important
 
-    /* Code blocks in dark mode */
+    /* ----- Code Blocks (figure.highlight) ----- */
     figure.highlight
-        background: #1e1e1e !important
+        background: var(--highlight-bg) !important
         border: 1px solid #404040 !important
 
         pre
-            background: #1e1e1e !important
+            background: var(--highlight-bg) !important
             color: #d4d4d4 !important
 
         code
-            background: #1e1e1e !important
+            background: var(--highlight-bg) !important
             color: #d4d4d4 !important
 
         figcaption
-            background: #2d2d2d !important
+            background: var(--bg-tertiary) !important
             color: #cccccc !important
             border-bottom: 1px solid #404040
 
         .gutter
-            background: #2d2d2d !important
+            background: var(--bg-tertiary) !important
             color: #858585 !important
 
             pre
                 color: #858585 !important
 
         table
-            background: #1e1e1e !important
+            background: var(--highlight-bg) !important
 
-    /* Inline code in dark mode */
-    .content code:not(.hljs)
-        background: #2d2d2d !important
-        color: #f8f8f2 !important
+        /* Code block action buttons */
+        .copy, .fold
+            color: var(--text-secondary) !important
 
-    /* Article licensing in dark mode */
+            &:hover
+                color: var(--link-color) !important
+
+        /* ----- Highlight.js Syntax Highlighting (atom-one-dark colors) ----- */
+        /* Base code text - don't override individual token colors */
+        .code pre
+            color: #abb2bf !important
+
+        /* Keywords: if, else, for, while, return, from, import, def, class, async, await, etc. */
+        .hljs-keyword
+            color: #c678dd !important
+
+        /* Built-in functions and types */
+        .hljs-built_in
+            color: #e5c07b !important
+
+        /* Strings */
+        .hljs-string
+            color: #98c379 !important
+
+        /* Numbers */
+        .hljs-number
+            color: #d19a66 !important
+
+        /* Comments */
+        .hljs-comment
+            color: #5c6370 !important
+            font-style: italic
+
+        /* Functions and methods */
+        .hljs-function
+            color: #61afef !important
+
+        /* Classes and types */
+        .hljs-class, .hljs-type
+            color: #e5c07b !important
+
+        /* Title (function/class names in definitions) */
+        .hljs-title
+            color: #61afef !important
+
+        /* Function titles specifically */
+        .hljs-title.hljs-function_
+            color: #61afef !important
+
+        /* Class titles specifically */
+        .hljs-title.hljs-class_
+            color: #e5c07b !important
+
+        /* Parameters */
+        .hljs-params
+            color: #abb2bf !important
+
+        /* Operators */
+        .hljs-operator
+            color: #56b6c2 !important
+
+        /* Variables */
+        .hljs-variable
+            color: #e06c75 !important
+
+        /* Attributes and properties */
+        .hljs-attr, .hljs-attribute
+            color: #d19a66 !important
+
+        /* Regular expressions */
+        .hljs-regexp
+            color: #98c379 !important
+
+        /* Meta information (decorators, preprocessor, etc.) */
+        .hljs-meta
+            color: #61afef !important
+
+        /* Tags (HTML/XML) */
+        .hljs-tag
+            color: #e06c75 !important
+
+        /* Tag names */
+        .hljs-name
+            color: #e06c75 !important
+
+        /* Symbols */
+        .hljs-symbol
+            color: #56b6c2 !important
+
+        /* Literals (True, False, None, null, etc.) */
+        .hljs-literal
+            color: #d19a66 !important
+
+        /* Constants */
+        .hljs-constant
+            color: #d19a66 !important
+
+        /* Punctuation */
+        .hljs-punctuation
+            color: #abb2bf !important
+
+        /* Links */
+        .hljs-link
+            color: #61afef !important
+            text-decoration: underline
+
+        /* Additions (diff) */
+        .hljs-addition
+            color: #98c379 !important
+            background: rgba(152, 195, 121, 0.1) !important
+
+        /* Deletions (diff) */
+        .hljs-deletion
+            color: #e06c75 !important
+            background: rgba(224, 108, 117, 0.1) !important
+
+        /* Section headers */
+        .hljs-section
+            color: #e5c07b !important
+
+        /* Bash/Shell specific - shebang */
+        .hljs-shebang
+            color: #5c6370 !important
+
+        /* Python specific - decorator */
+        .hljs-decorator
+            color: #e5c07b !important
+
+        /* JavaScript/TypeScript specific */
+        .hljs-template-variable
+            color: #e06c75 !important
+
+        .hljs-template-string
+            color: #98c379 !important
+
+        /* JSON/Object keys */
+        .hljs-property
+            color: #e06c75 !important
+
+        /* YAML/TOML keys */
+        .hljs-bullet
+            color: #d19a66 !important
+
+        /* CSS specific */
+        .hljs-selector-tag
+            color: #e06c75 !important
+
+        .hljs-selector-class
+            color: #e5c07b !important
+
+        .hljs-selector-id
+            color: #61afef !important
+
+        /* Doctypes and XML declarations */
+        .hljs-doctag
+            color: #c678dd !important
+
+        /* Strong emphasis */
+        .hljs-strong
+            font-weight: bold
+            color: #e5c07b !important
+
+        /* Emphasis */
+        .hljs-emphasis
+            font-style: italic
+            color: #c678dd !important
+
+        /* Subst (template substitutions) */
+        .hljs-subst
+            color: #abb2bf !important
+
+        /* Code (inline code in markdown) */
+        .hljs-code
+            color: #98c379 !important
+
+        /* Quote */
+        .hljs-quote
+            color: #5c6370 !important
+            font-style: italic
+
+    /* ----- Article Licensing Box ----- */
     .article-licensing
-        background: #21262d !important
-        border: 1px solid #30363d !important
+        background: var(--bg-tertiary) !important
+        border: 1px solid var(--border-color) !important
 
         .licensing-title,
         .licensing-title p
             color: #e6eef8 !important
 
         h6
-            color: #8b949e !important
+            color: var(--text-secondary) !important
 
         p
-            color: #c9d1d9 !important
+            color: var(--text-primary) !important
 
         a
-            color: #58a6ff !important
+            color: var(--link-color) !important
 
-    /* Remove button box borders in dark mode */
-    .button.is-transparent
-        background: transparent !important
-        border: none !important
-        box-shadow: none !important
+    /* ----- Card Components ----- */
+    .card-header-title
+        color: #e6eef8
+
+    .card-content
+        color: var(--text-primary)
+
+        hr
+            background-color: var(--border-color) !important
+
+    /* Post title links */
+    .card .title a,
+    .card .title a.link-muted
+        color: var(--link-color) !important
+
+        &:hover
+            color: #ffffff !important
+
+    .card .title a.has-link-black-ter
+        color: #e6eef8
+
+        &:hover
+            color: var(--link-color)
+
+    /* ----- Navbar ----- */
+    .navbar-item
+        color: var(--text-primary)
+
+        &:hover
+            color: #e6eef8
+            background-color: rgba(48, 54, 61, 0.5)
+
+        &.is-active
+            color: var(--link-color)
+            background-color: rgba(48, 54, 61, 0.5)
+            border-bottom: 2px solid var(--link-color)
+
+    /* ----- Widgets ----- */
+    .widget
+        .menu-label
+            color: #e6eef8
+
+        .heading
+            color: var(--text-secondary)
+
+        .menu-list a
+            color: var(--text-secondary) !important
+
+            &:hover
+                background: var(--bg-tertiary) !important
+                color: var(--link-color) !important
+
+            &.is-active
+                background: var(--bg-tertiary) !important
+                color: var(--link-color) !important
+
+    /* ----- Form Elements ----- */
+    .button
+        background: var(--bg-tertiary)
+        color: var(--text-primary)
+        border-color: var(--border-color)
+
+        &:hover
+            background: #30363d
+            color: #e6eef8
+
+        &.is-transparent
+            background: transparent !important
+            border: none !important
+            box-shadow: none !important
 
     .level-item.button
         background: transparent !important
         border: none !important
         box-shadow: none !important
 
-/* Light mode specific styles */
+    input, textarea, select
+        background: var(--bg-primary)
+        color: var(--text-primary)
+        border-color: var(--border-color)
+
+        &::placeholder
+            color: var(--text-secondary)
+
+    /* ----- Tags ----- */
+    .tag
+        background: var(--bg-tertiary)
+        color: var(--text-primary)
+
+    /* ----- Metadata ----- */
+    .date, .categories, .is-size-7
+        color: var(--text-secondary)
+
+    .link-muted
+        color: var(--text-secondary)
+
+        &:hover
+            color: var(--link-color)
+
+    /* ----- Notifications ----- */
+    .notification
+        background: var(--bg-secondary)
+        color: var(--text-primary)
+
+    /* ----- Timeline (Archives) ----- */
+    .timeline
+        border-left-color: var(--border-color)
+
+        .media:before
+            background: var(--border-color)
+
+        .media:last-child:after
+            background: var(--bg-secondary)
+
+    /* ----- Article Navigation ----- */
+    .article-nav-prev, .article-nav-next
+        color: var(--text-secondary)
+
+        &:hover
+            color: var(--link-color)
+
+    .article-more
+        background: var(--bg-tertiary) !important
+        color: var(--link-color) !important
+        border-color: var(--border-color) !important
+
+        &:hover
+            background: #30363d !important
+            color: var(--link-hover) !important
+            border-color: var(--link-color) !important
+
+        .has-text-grey
+            color: var(--text-secondary) !important
+
+    /* ----- TOC (Table of Contents) ----- */
+    .toc
+        background: var(--bg-secondary) !important
+        border-color: var(--border-color) !important
+
+    .toc-link
+        color: var(--text-secondary) !important
+
+        &:hover
+            color: var(--link-color) !important
+
+        &.is-active-link
+            color: var(--link-color) !important
+
+    .toc-item
+        border-color: var(--border-color) !important
+
+    /* ----- Search (Insight) ----- */
+    .ins-search
+        background: rgba(13, 17, 23, 0.95) !important
+
+    .ins-search-wrapper
+        background: var(--bg-secondary) !important
+        border-color: var(--border-color) !important
+
+    .ins-input-wrapper
+        background: var(--bg-secondary) !important
+        border-color: var(--border-color) !important
+
+    .ins-input
+        background: transparent !important
+        color: var(--text-primary) !important
+
+        &::placeholder
+            color: var(--text-secondary) !important
+
+    .ins-section-wrapper
+        background: var(--bg-secondary) !important
+
+    .ins-section-header
+        background: var(--bg-tertiary) !important
+        color: #e6eef8 !important
+        border-color: var(--border-color) !important
+
+    .ins-selectable
+        color: var(--text-primary) !important
+
+        &:hover, &.active
+            background: var(--bg-tertiary) !important
+            color: var(--link-color) !important
+
+    .ins-slug
+        color: var(--text-secondary) !important
+
+    /* Search box styles */
+    .searchbox
+        background: rgba(13, 17, 23, 0.95) !important
+
+    .searchbox-container
+        background: var(--bg-secondary) !important
+        border-color: var(--border-color) !important
+
+    .searchbox-header
+        background: var(--bg-tertiary) !important
+        border-color: var(--border-color) !important
+
+    .searchbox-input
+        background: var(--bg-secondary) !important
+        color: var(--text-primary) !important
+
+        &::placeholder
+            color: var(--text-secondary) !important
+
+    .searchbox-body
+        background: var(--bg-secondary) !important
+        color: var(--text-primary) !important
+
+    /* ----- Cookie Consent ----- */
+    .cc-window
+        background: var(--bg-secondary) !important
+        border: 1px solid var(--border-color) !important
+        color: var(--text-primary) !important
+
+    .cc-message
+        color: var(--text-primary) !important
+
+    .cc-link
+        color: var(--link-color) !important
+
+        &:hover
+            color: var(--link-hover) !important
+
+    .cc-btn
+        background: var(--bg-tertiary) !important
+        color: var(--text-primary) !important
+        border-color: var(--border-color) !important
+
+        &:hover
+            background: #30363d !important
+            color: #e6eef8 !important
+
+    .cc-allow, .cc-dismiss
+        background: #238636 !important
+
+        &:hover
+            background: #2ea043 !important
+
+    .cc-deny
+        background: #da3633 !important
+
+        &:hover
+            background: #e5534b !important
+
+    /* ----- Gallery (LightGallery) ----- */
+    .lg-backdrop
+        background-color: rgba(13, 17, 23, 0.95) !important
+
+    .lg-outer
+        background-color: var(--bg-primary) !important
+
+    .lg-toolbar, .lg-actions
+        background-color: rgba(22, 27, 34, 0.8) !important
+
+    .lg-sub-html
+        background-color: rgba(22, 27, 34, 0.9) !important
+        color: var(--text-primary) !important
+
+    /* ----- Back to Top Button ----- */
+    #back-to-top
+        background: var(--bg-tertiary) !important
+        color: var(--text-primary) !important
+        border-color: var(--border-color) !important
+
+        &:hover
+            background: #30363d !important
+            color: var(--link-color) !important
+
+    /* ----- Share Buttons (AddToAny) ----- */
+    .a2a_kit a
+        opacity: 0.9
+
+        &:hover
+            opacity: 1
+
+    /* ----- Progress Bar ----- */
+    #nprogress .bar
+        background: var(--link-color) !important
+
+    #nprogress .peg
+        box-shadow: 0 0 10px var(--link-color), 0 0 5px var(--link-color) !important
+
+    #nprogress .spinner-icon
+        border-top-color: var(--link-color) !important
+        border-left-color: var(--link-color) !important
+
+    /* ----- Pace Loading Bar ----- */
+    .pace .pace-progress
+        background: var(--link-color) !important
+
+
+/* =============================================
+   LIGHT MODE - Base/Default styles
+   ============================================= */
+
+/* Post title links - light mode */
 .card .title a.has-link-black-ter
     color: #111
-    transition: color 0.18s ease, transform 0.12s ease
+    transition: color 0.18s ease
 
     &:hover
-        transform: translateY(-2px)
+        color: var(--link-color)
 
 .card .title a,
 .card .title a.link-muted
-    color: #58a6ff !important
+    color: var(--link-color) !important
     transition: color 0.2s ease
-    transform: none !important
 
     &:hover
         color: #111 !important
-        transform: none !important
 
-/* Make post titles smaller */
+/* Post titles sizing */
 .card .title.is-3
     font-size: 1.5rem !important
 
@@ -310,20 +790,19 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
     .card .title.is-3.is-size-4-mobile
         font-size: 1.1rem !important
 
-/* Make page headings (Blogs, Photography, etc.) bigger */
+/* Page headings */
 .card-content > .title.is-3:first-child,
 .content > .title.is-3:first-child
     font-size: 2.25rem !important
 
-/* Center share buttons */
+/* Share buttons centering */
 .a2a_kit
     display: flex !important
     justify-content: center !important
     align-items: center !important
     min-height: 32px
     margin-top: 1rem
-    
-    /* Show placeholders before script loads */
+
     a
         display: inline-block
         width: 32px
@@ -331,158 +810,11 @@ html, body, .card, .navbar-main, .footer, a, .content, .title, p, h1, h2, h3, h4
         margin: 0 4px
         background-color: #0166ff
         border-radius: 4px
-        
+
         &:hover
             opacity: 0.8
 
-/* Dark mode share button styles */
-.dark-mode
-    /* AddToAny share buttons - the icons already have colors, just adjust brightness */
-    .a2a_kit a
-        opacity: 0.9
-        
-        &:hover
-            opacity: 1
-    
-    /* Cookie Consent popup in dark mode */
-    .cc-window
-        background: #161b22 !important
-        border: 1px solid #30363d !important
-        color: #c9d1d9 !important
-    
-    .cc-message
-        color: #c9d1d9 !important
-    
-    .cc-link
-        color: #58a6ff !important
-        
-        &:hover
-            color: #79c0ff !important
-    
-    .cc-btn
-        background: #21262d !important
-        color: #c9d1d9 !important
-        border-color: #30363d !important
-        
-        &:hover
-            background: #30363d !important
-            color: #e6eef8 !important
-    
-    .cc-allow, .cc-dismiss
-        background: #238636 !important
-        
-        &:hover
-            background: #2ea043 !important
-    
-    .cc-deny
-        background: #da3633 !important
-        
-        &:hover
-            background: #e5534b !important
-    
-    /* Gallery (lightGallery) in dark mode */
-    .lg-backdrop
-        background-color: rgba(13, 17, 23, 0.95) !important
-    
-    .lg-outer
-        background-color: #0d1117 !important
-    
-    .lg-toolbar, .lg-actions
-        background-color: rgba(22, 27, 34, 0.8) !important
-    
-    .lg-sub-html
-        background-color: rgba(22, 27, 34, 0.9) !important
-        color: #c9d1d9 !important
-    
-    /* Progress bar in dark mode */
-    #nprogress .bar
-        background: #58a6ff !important
-    
-    #nprogress .peg
-        box-shadow: 0 0 10px #58a6ff, 0 0 5px #58a6ff !important
-    
-    #nprogress .spinner-icon
-        border-top-color: #58a6ff !important
-        border-left-color: #58a6ff !important
-    
-    /* Back to top button in dark mode */
-    #back-to-top
-        background: #21262d !important
-        color: #c9d1d9 !important
-        border-color: #30363d !important
-        
-        &:hover
-            background: #30363d !important
-            color: #58a6ff !important
-    
-    /* Insight search (alternative search UI) */
-    .ins-search
-        background: rgba(13, 17, 23, 0.95) !important
-    
-    .ins-search-wrapper
-        background: #161b22 !important
-        border-color: #30363d !important
-    
-    .ins-input-wrapper
-        background: #161b22 !important
-        border-color: #30363d !important
-    
-    .ins-input
-        background: transparent !important
-        color: #c9d1d9 !important
-        
-        &::placeholder
-            color: #8b949e !important
-    
-    .ins-section-wrapper
-        background: #161b22 !important
-    
-    .ins-section-header
-        background: #21262d !important
-        color: #e6eef8 !important
-        border-color: #30363d !important
-    
-    .ins-selectable
-        color: #c9d1d9 !important
-        
-        &:hover, &.active
-            background: #21262d !important
-            color: #58a6ff !important
-    
-    .ins-slug
-        color: #8b949e !important
-    
-    /* TOC (Table of Contents) widget in dark mode */
-    .toc
-        background: #161b22 !important
-        border-color: #30363d !important
-    
-    .toc-link
-        color: #8b949e !important
-        
-        &:hover
-            color: #58a6ff !important
-        
-        &.is-active-link
-            color: #58a6ff !important
-    
-    .toc-item
-        border-color: #30363d !important
-    
-    /* Widget boxes in dark mode */
-    .widget
-        .menu-list a
-            color: #8b949e !important
-            
-            &:hover
-                background: #21262d !important
-                color: #58a6ff !important
-                
-            &.is-active
-                background: #21262d !important
-                color: #58a6ff !important
-
-/* Post card separator line - lighter gray */
+/* HR styling for light mode */
 .card-content hr,
 .content hr
     background-color: #e0e0e0
