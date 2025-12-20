@@ -125,12 +125,19 @@ module.exports = class extends Component {
 
             <title>{getPageTitle(page, config.title, helper)}</title>
             
-            {/* Apply dark mode immediately to prevent flash */}
+            {/* Apply dark mode immediately based on system preference or stored preference */}
             <script dangerouslySetInnerHTML={{
                 __html: `
                     (function() {
-                        const stored = localStorage.getItem('theme-mode');
-                        const isDark = stored !== null ? stored === 'true' : false;
+                        var stored = localStorage.getItem('theme-mode');
+                        var isDark;
+                        if (stored !== null) {
+                            // User has manually set preference
+                            isDark = stored === 'true';
+                        } else {
+                            // Use system preference
+                            isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        }
                         if (isDark) {
                             document.documentElement.classList.add('dark-mode');
                         }
