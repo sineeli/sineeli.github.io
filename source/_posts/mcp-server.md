@@ -118,25 +118,34 @@ Each function here represents a tool that the MCP server exposes. Clients can ca
 
 ```python
 @mcp.tool
-def add(x: int, y: int) -> int:
+def add(x: float, y: float) -> float:
     """Add two numbers."""
+    print(f"Adding {x} and {y}")
     return x + y
+
+@mcp.tool
+def subtract(x: float, y: float) -> float:
+    """Subtract two numbers."""
+    print(f"Subtracting {y} from {x}")
+    return x - y
 
 
 @mcp.tool
-def multiply(x: int, y: int) -> int:
+def multiply(x: float, y: float) -> float:
     """Multiply two numbers."""
+    print(f"Multiplying {x} and {y}")
     return x * y
 
 
 @mcp.tool
-def divide(x: int, y: int) -> float:
+def divide(x: float, y: float) -> float:
     """Divide two numbers."""
+    print(f"Dividing {x} by {y}")
     if y == 0:
         raise ValueError("Cannot divide by zero.")
     return x / y
 
-## Start the MCP server with Streamable HTTP transport.
+
 if __name__ == "__main__":
     mcp.run(transport="streamable-http")
 ```
