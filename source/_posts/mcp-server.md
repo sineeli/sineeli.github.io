@@ -1,11 +1,12 @@
 ---
 title: MCP Server - Part 1
-date: 2025-12-15 14:36:12
+date: 2025-12-20 10:00:00
 categories: blogs
 tags:
     - MCP
     - AI
     - Agentic
+toc: true
 layout: post
 ---
 

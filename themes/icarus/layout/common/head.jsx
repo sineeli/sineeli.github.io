@@ -179,7 +179,13 @@ module.exports = class extends Component {
             {rss ? <link rel="alternate" href={url_for(rss)} title={config.title} type="application/atom+xml" /> : null}
             {favicon ? <link rel="icon" href={url_for(favicon)} /> : null}
             <link rel="stylesheet" href={iconcdn()} />
-            {hlTheme ? <link data-pjax rel="stylesheet" href={cdn('highlight.js', '11.7.0', 'styles/' + hlTheme + '.css')} /> : null}
+            {hlTheme ? [
+                <link data-pjax rel="stylesheet" id="hljs-theme-light" href={cdn('highlight.js', '11.7.0', 'styles/' + hlTheme + '.css')} />,
+                <link data-pjax rel="stylesheet" id="hljs-theme-dark" href={cdn('highlight.js', '11.7.0', 'styles/atom-one-dark.css')} disabled />,
+                <script dangerouslySetInnerHTML={{
+                    __html: `(function(){try{var stored=localStorage.getItem('theme-mode');var isDark=stored!==null?stored==='true':false;var light=document.getElementById('hljs-theme-light');var dark=document.getElementById('hljs-theme-dark');if(light&&dark){light.disabled=!!isDark;dark.disabled=!isDark;}}catch(e){}})();`
+                }} />
+            ] : null}
             <link rel="stylesheet" href={fontCssUrl[variant]} />
             <link data-pjax rel="stylesheet" href={url_for('/css/' + variant + '.css')} />
             <Plugins site={site} config={config} helper={helper} page={page} head={true} />

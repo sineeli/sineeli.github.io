@@ -7,10 +7,21 @@
   const STORAGE_KEY = 'theme-mode';
   const TOGGLE_ID = 'dark-mode-toggle';
   const DARK_CLASS = 'dark-mode';
+  const HLJS_LIGHT_ID = 'hljs-theme-light';
+  const HLJS_DARK_ID = 'hljs-theme-dark';
   let initialized = false;
+
+  function applyHighlightTheme(isDark) {
+    const light = document.getElementById(HLJS_LIGHT_ID);
+    const dark = document.getElementById(HLJS_DARK_ID);
+    if (!light || !dark) return;
+    light.disabled = !!isDark;
+    dark.disabled = !isDark;
+  }
 
   function applyTheme(isDark) {
     document.documentElement.classList.toggle(DARK_CLASS, isDark);
+    applyHighlightTheme(isDark);
     const btn = document.getElementById(TOGGLE_ID);
     if (btn) {
       btn.setAttribute('aria-pressed', String(isDark));
