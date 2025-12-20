@@ -19,16 +19,16 @@ Instead of keeping tools (functions like “search”, “read file”, “add n
 
 ### 💡 The Basic Idea
 
-*   **Client/Agent**: The app that chats with the model (Claude Desktop, Cursor, Copilot, or your own Python app).
-*   **Model**: The LLM that decides what to do (answer directly vs call a tool).
-*   **MCP Server**: The server that actually runs tools and returns results.
+* **Client/Agent**: The app that chats with the model (Claude Desktop, Cursor, Copilot, or your own Python app).
+* **Model**: The LLM that decides what to do (answer directly vs call a tool).
+* **MCP Server**: The server that actually runs tools and returns results.
 
 ### 🔄 Request/Response Flow
 
-1.  The **client** constructs the tool call request (tool name + JSON parameters).
-2.  Sends it to the **MCP Server** (typically as a POST request).
-3.  The **server** executes the tool.
-4.  Returns the **tool output** back to the client.
+1. The **client** constructs the tool call request (tool name + JSON parameters).
+2. Sends it to the **MCP Server** (typically as a POST request).
+3. The **server** executes the tool.
+4. Returns the **tool output** back to the client.
 
 The **Model Context Protocol (MCP)** standardizes the request and response format so tools can be reused across clients.
 
@@ -50,8 +50,8 @@ Now here is where we usually get confused: **what is the client?**
 
 A client is anything that can connect to an MCP Server and ask it to run tools.
 
-*   **Existing MCP clients**: Claude Desktop, Cursor, Copilot (these already know how to talk MCP).
-*   **Your own client**: A custom app built using an agent framework (like the Python client below).
+* **Existing MCP clients**: Claude Desktop, Cursor, Copilot (these already know how to talk MCP).
+* **Your own client**: A custom app built using an agent framework (like the Python client below).
 
 ### 🔄 Switching (Swapping) Between Clients
 
@@ -59,14 +59,14 @@ This is the main benefit of MCP: the **server/tools stay the same**, and you can
 
 To swap clients, you usually only need:
 
-1.  The **MCP Server URL** (for `streamable-http`, e.g., `http://localhost:8000/mcp`).
-2.  The **MCP transport type** (here: `streamable-http`).
-3.  The same **tool schema** exposed by the server (your `@mcp.tool` functions).
+1. The **MCP Server URL** (for `streamable-http`, e.g., `http://localhost:8000/mcp`).
+2. The **MCP transport type** (here: `streamable-http`).
+3. The same **tool schema** exposed by the server (your `@mcp.tool` functions).
 
 **Then:**
 
-*   If you’re moving from the **Python client → Claude Desktop/Cursor/Copilot**: Configure that app to connect to your MCP Server URL.
-*   If you’re moving from **Claude Desktop/Cursor/Copilot → your Python client**: Keep the server running and point your Python client to the same URL.
+* If you’re moving from the **Python client → Claude Desktop/Cursor/Copilot**: Configure that app to connect to your MCP Server URL.
+* If you’re moving from **Claude Desktop/Cursor/Copilot → your Python client**: Keep the server running and point your Python client to the same URL.
 
 The tool list will be discovered from the server, so you don’t rewrite tools for each client.
 
@@ -90,8 +90,8 @@ pip install fastmcp
 
 #### 🚦 Understanding Transport Modes
 
-*   **`streamable-http`**: Deploy MCP server as a separate service over network. Multiple clients can access the same server over HTTP. Use this for production deployments.
-*   **`stdio`**: For local clients running in the same environment. The client starts the MCP server as a subprocess. Use this for development and testing.
+* **`streamable-http`**: Deploy MCP server as a separate service over network. Multiple clients can access the same server over HTTP. Use this for production deployments.
+* **`stdio`**: For local clients running in the same environment. The client starts the MCP server as a subprocess. Use this for development and testing.
 
 In this example, we use `streamable-http` for network-based communication.
 
@@ -141,19 +141,20 @@ if __name__ == "__main__":
 ```
 
 To run the server:
+
 ```bash
 python mcp_server.py
 ```
 
 <div style="text-align:center;">
-<img src="mcp-server/mcp-server.png" alt="MCP Server Running" style="max-width:800px; height:auto;" />
+<img src="mcp-server.png" alt="MCP Server Running" style="max-width:800px; height:auto;" />
 <p><em>MCP Server Running</em></p>
 </div>
 
 You can also inspect the available tools by running `fastmcp dev mcp_server.py` and it will start an inspector server at `http://127.0.0.1:6274`. You will see the token attached to the URL in the terminal. Basically, here you can test the tools directly from the browser, given the input parameters.
 
 <div style="text-align:center;">
-<img src="mcp-server/mcp-inspector.png" alt="MCP Server Inspector" style="max-width:800px; height:auto;" />
+<img src="mcp-inspector.png" alt="MCP Server Inspector" style="max-width:800px; height:auto;" />
 <p><em>MCP Server Inspector</em></p>
 </div>
 
@@ -177,9 +178,9 @@ Instead of using the paid OpenAI API, use free local models with **Ollama** for 
 
 #### 📥 Install Ollama
 
-1.  Download and install Ollama from [ollama.ai](https://ollama.ai).
-2.  Start the Ollama service.
-3.  Pull a model: `ollama pull llama3.2`.
+1. Download and install Ollama from [ollama.ai](https://ollama.ai).
+2. Start the Ollama service.
+3. Pull a model: `ollama pull llama3.2`.
 
 Visit the [Ollama Library](https://ollama.ai/library) to see all available models.
 
@@ -199,8 +200,8 @@ If the agent fails to use tools, switch to larger models available in Ollama, or
 
 Configure connection settings and import required libraries.
 
-1.  **OpenAI (Paid)**: Better performance, faster responses.
-2.  **Ollama (Free)**: Local models, no API key required.
+1. **OpenAI (Paid)**: Better performance, faster responses.
+2. **Ollama (Free)**: Local models, no API key required.
 
 This example uses Ollama. To use OpenAI, uncomment Option 1 and comment out Option 2.
 
@@ -252,9 +253,9 @@ console = Console()
 
 Initialize the MCP server connection and the language model client.
 
-*   **MCP Server Connection**: Uses Streamable HTTP transport to connect to the server.
-*   **OpenAI Client**: Works with both OpenAI and Ollama APIs (OpenAI-compatible).
-*   **Model**: Initialized using `OpenAIChatCompletionsModel`.
+* **MCP Server Connection**: Uses Streamable HTTP transport to connect to the server.
+* **OpenAI Client**: Works with both OpenAI and Ollama APIs (OpenAI-compatible).
+* **Model**: Initialized using `OpenAIChatCompletionsModel`.
 
 ```python
 async def initialize_resources():
@@ -288,8 +289,8 @@ async def initialize_resources():
 
 Manages a single conversation turn with the agent.
 
-*   **Runner**: Orchestrator that manages agent execution, including tool calls and response generation. Handles complexity like single or multiple tool calls and handoffs between tools. It's a wrapper that manages the agent's execution flow.
-*   **Result**: Once the runner completes, extract the final output and return it.
+* **Runner**: Orchestrator that manages agent execution, including tool calls and response generation. Handles complexity like single or multiple tool calls and handoffs between tools. It's a wrapper that manages the agent's execution flow.
+* **Result**: Once the runner completes, extract the final output and return it.
 
 ```python
 async def chat_turn(agent, history, user_input):
@@ -320,9 +321,9 @@ async def chat_turn(agent, history, user_input):
 
 Create the agent with the model, MCP server connection, and instructions.
 
-*   **Agent Class**: Defines the agent's behavior including name, model, connected MCP servers, model settings, and instructions.
-*   **MCP Server Connection**: Passed to the agent, allowing it to utilize the tools registered on the MCP server.
-*   **Internal Conversion**: All MCP tools are converted to function calling format that the model understands.
+* **Agent Class**: Defines the agent's behavior including name, model, connected MCP servers, model settings, and instructions.
+* **MCP Server Connection**: Passed to the agent, allowing it to utilize the tools registered on the MCP server.
+* **Internal Conversion**: All MCP tools are converted to function calling format that the model understands.
 
 ```python
 async def main():
@@ -357,8 +358,8 @@ async def main():
 
 Interactive loop that processes user input and displays agent responses.
 
-*   **Flow**: Accepts user input → Processes with agent → Displays response → Repeat.
-*   **Exit**: Type 'quit', 'exit', or 'stop' to end the conversation.
+* **Flow**: Accepts user input → Processes with agent → Displays response → Repeat.
+* **Exit**: Type 'quit', 'exit', or 'stop' to end the conversation.
 
 ```python
         # 4. Chat Loop
@@ -389,8 +390,8 @@ if __name__ == "__main__":
 
 ## 📝 Summary
 
-1.  You may think tools are just small functions LLMs can do by default, but in reality, you can design complex tools that encapsulate business logic, access databases, call external APIs, and more. **MCP Server** allows you to centralize these tools and make them accessible to any MCP-compatible client.
-2.  Now here if you ask `add 2 and 4` as it can call the `add` tool on the MCP server, get the result `6`, and respond back. But you can do more complex operations by chaining tool calls and these actions are handled by the **Runner** internally.
+1. You may think tools are just small functions LLMs can do by default, but in reality, you can design complex tools that encapsulate business logic, access databases, call external APIs, and more. **MCP Server** allows you to centralize these tools and make them accessible to any MCP-compatible client.
+2. Now here if you ask `add 2 and 4` as it can call the `add` tool on the MCP server, get the result `6`, and respond back. But you can do more complex operations by chaining tool calls and these actions are handled by the **Runner** internally.
 
 ```text
 You: add 56 and 3546.9 then multiply by 3.2 and subtract 10
@@ -412,6 +413,6 @@ Breakdown:
 ```
 
 <div style="text-align:center;">
-<img src="mcp-server/tool-calls.png" alt="MCP Tool Calls" style="max-width:800px; height:auto;" />
+<img src="tool-calls.png" alt="MCP Tool Calls" style="max-width:800px; height:auto;" />
 <p><em>MCP Tool Calls</em></p>
 </div>
