@@ -8,7 +8,7 @@ const PostCard = require('./post-card');
  */
 module.exports = class CategoryPosts extends Component {
     render() {
-        const { site, helper, config, categoryName, emptyMessage } = this.props;
+        const { site, helper, config, categoryName, emptyMessage, pageTitle } = this.props;
 
         // collect posts array
         let allPosts = [];
@@ -39,6 +39,7 @@ module.exports = class CategoryPosts extends Component {
         });
 
         return <Fragment>
+            {pageTitle && <h1 class="page-title">{pageTitle}</h1>}
             {filteredPosts.length ? filteredPosts.map(post => (
                 <PostCard 
                     key={post.path}

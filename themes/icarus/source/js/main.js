@@ -48,13 +48,6 @@
     adjustNavbar();
     $(window).resize(adjustNavbar);
 
-    // Mobile navbar burger toggle
-    $('.navbar-burger').on('click', function() {
-        const target = $(this).data('target');
-        $(this).toggleClass('is-active');
-        $('#' + target).toggleClass('is-active');
-    });
-
     function toggleFold(codeBlock, isFolded) {
         const $toggle = $(codeBlock).find('.fold i');
         !isFolded ? $(codeBlock).removeClass('folded') : $(codeBlock).addClass('folded');
@@ -149,3 +142,45 @@
         $('.navbar-main .catalogue').on('click', toggleToc);
     }
 }(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings));
+
+// Mobile navbar burger toggle - outside IIFE for PJAX compatibility
+(function($) {
+    // Use event delegation on document.body for maximum compatibility
+    if (!window._navbarBurgerInitialized) {
+        window._navbarBurgerInitialized = true;
+        
+        // Burger toggle
+        document.addEventListener('click', function(e) {
+            var burger = e.target.closest('.navbar-burger');
+            if (burger) {
+                e.preventDefault();
+                var target = burger.getAttribute('data-target');
+                var menu = document.getElementById(target);
+                
+                burger.classList.toggle('is-active');
+                if (menu) {
+                    menu.classList.toggle('is-active');
+                }
+                
+                // Update aria-expanded
+                burger.setAttribute('aria-expanded', burger.classList.contains('is-active'));
+            }
+        }, true);
+        
+        // Close menu when clicking on a navbar item (mobile only)
+        document.addEventListener('click', function(e) {
+            var navbarItem = e.target.closest('.navbar-menu .navbar-item');
+            if (navbarItem && window.innerWidth < 1024) {
+                var burger = document.querySelector('.navbar-burger');
+                var menu = document.querySelector('.navbar-menu');
+                if (burger) {
+                    burger.classList.remove('is-active');
+                    burger.setAttribute('aria-expanded', 'false');
+                }
+                if (menu) {
+                    menu.classList.remove('is-active');
+                }
+            }
+        }, true);
+    }
+}(jQuery));

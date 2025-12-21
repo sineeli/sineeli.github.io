@@ -20,13 +20,13 @@ $navbar-item-margin-h ?= 0
         flex-shrink: 0
 
         .navbar-burger
-            display: none
             color: inherit
             cursor: pointer
             height: 3.25rem
             width: 3.25rem
             margin-left: auto
             position: relative
+            display: flex
             align-items: center
             justify-content: center
 
@@ -59,7 +59,7 @@ $navbar-item-margin-h ?= 0
 
     // Desktop: show menu inline, hide burger
     +from($desktop)
-        .navbar-burger
+        .navbar-brand .navbar-burger
             display: none !important
 
         .navbar-menu

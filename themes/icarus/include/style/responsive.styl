@@ -15,6 +15,14 @@
         max-width: $desktop - 2 * $gap
         width: auto
 
+// Centered content for posts without TOC
+.is-1-column
+    .columns.is-centered
+        justify-content: center
+        
+        .column-main
+            flex: none
+
 +tablet()
     .is-sticky
         position: -webkit-sticky

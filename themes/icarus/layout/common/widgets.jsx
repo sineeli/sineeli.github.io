@@ -22,9 +22,13 @@ function formatWidgets(widgets) {
 }
 
 function hasColumn(widgets, position, config, page) {
-    const showToc = (config.toc === true) && ['page', 'post'].includes(page.layout);
+    const showToc = (config.toc === true) && ['page', 'post'].includes(page.layout) && page.toc !== false;
     // Hide only right sidebar on post pages, show full left sidebar
     if (page.layout === 'post' && position === 'right') {
+        return false;
+    }
+    // Hide left sidebar on post pages when TOC is disabled
+    if (page.layout === 'post' && position === 'left' && !showToc) {
         return false;
     }
     if (Array.isArray(widgets)) {
@@ -79,9 +83,17 @@ class Widgets extends Component {
         const { site, config, helper, page, position } = this.props;
         const widgets = formatWidgets(config.widgets)[position] || [];
         const columnCount = getColumnCount(config.widgets, config, page);
+        
+        // Check if TOC should be shown for this page
+        const showToc = (config.toc === true) && ['page', 'post'].includes(page.layout) && page.toc !== false;
 
         // Hide only right sidebar on post pages
         if (page.layout === 'post' && position === 'right') {
+            return null;
+        }
+        
+        // Hide left sidebar on post pages when TOC is disabled
+        if (page.layout === 'post' && position === 'left' && !showToc) {
             return null;
         }
 

@@ -9,9 +9,9 @@ module.exports = class extends Component {
             site={site}
             helper={helper}
             config={config}
-            categoryName="blogs"
-            pageTitle="Blogs"
-            emptyMessage="No blog posts yet."
+            categoryName="gaming"
+            pageTitle="Gaming"
+            emptyMessage="No gaming posts yet."
         />;
     }
 };

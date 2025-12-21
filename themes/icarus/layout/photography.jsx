@@ -10,6 +10,7 @@ module.exports = class extends Component {
             helper={helper}
             config={config}
             categoryName="photography"
+            pageTitle="Photography"
             emptyMessage="No photography posts yet."
         />;
     }

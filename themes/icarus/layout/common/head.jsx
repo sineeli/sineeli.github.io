@@ -1,6 +1,5 @@
 const { Component } = require('inferno');
 const MetaTags = require('hexo-component-inferno/lib/view/misc/meta');
-const WebApp = require('hexo-component-inferno/lib/view/misc/web_app');
 const OpenGraph = require('hexo-component-inferno/lib/view/misc/open_graph');
 const StructuredData = require('hexo-component-inferno/lib/view/misc/structured_data');
 const Plugins = require('./plugins');
@@ -120,6 +119,7 @@ module.exports = class extends Component {
         return <head>
             <meta charset="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+            <meta name="mobile-web-app-capable" content="yes" />
             {noIndex ? <meta name="robots" content="noindex" /> : null}
             {meta && meta.length ? <MetaTags meta={meta} /> : null}
 
@@ -145,12 +145,10 @@ module.exports = class extends Component {
                 `
             }} />
 
-            <WebApp.Cacheable
-                helper={helper}
-                favicon={favicon}
-                icons={manifest.icons}
-                themeColor={manifest.theme_color}
-                name={manifest.name || config.title} />
+            {/* Web App meta tags - using modern format */}
+            <link rel="icon" href={helper.url_for(favicon)} />
+            <link rel="manifest" href={helper.url_for('/manifest.json')} />
+            <meta name="theme-color" content={manifest.theme_color || '#1a1a2e'} />
 
             {typeof open_graph === 'object' && open_graph !== null ? <OpenGraph
                 type={open_graph.type || (is_post(page) ? 'article' : 'website')}

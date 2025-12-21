@@ -12,28 +12,28 @@ head:
     # https://developer.mozilla.org/en-US/docs/Web/Manifest
     manifest:
         # Name of the web application (default to the site title)
-        name: 
+        name: "Neeli's Blog"
         # The displayed name of the web application
         # when there is not enough space to display full name
-        short_name: 
+        short_name: "Neeli's Blog"
         # The start URL of the web application
-        start_url: 
+        start_url: /
         # The default theme color for the application
-        theme_color: 
+        theme_color: "#1a1a2e"
         # A placeholder background color for the application page to display
         # before its stylesheet is loaded
-        background_color: 
+        background_color: "#1a1a2e"
         # The preferred display mode for the website
         display: standalone
         # Image files that can serve as application icons for different contexts
         icons:
             -
                 # The path to the image file
-                src: ''
+                src: /img/logo.png
                 # A string containing space-separated image dimensions
-                sizes: ''
+                sizes: "192x192"
                 # A hint as to the media type of the image
-                type: 
+                type: "image/png" 
     # Open Graph metadata
     # https://hexo.io/docs/helpers.html#open-graph
     open_graph:
@@ -106,11 +106,12 @@ navbar:
     # Navigation menu items
     menu:
         Home: /
-        Archives: /archives
         Blogs: /blogs
+        Gaming: /gaming
         Photography: /photography
         Categories: /categories
         Tags: /tags
+        Archives: /archives
     # Links to be shown on the right of the navigation bar
     links:
         GitHub:

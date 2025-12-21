@@ -10,6 +10,8 @@ toc: true
 layout: post
 ---
 
+This blog post explains **MCP Server** and how to set it up using **FastMCP**. Additionally, it demonstrates how to create a simple AI Agent client that connects to the MCP server and utilizes the exposed tools.
+
 <!-- more -->
 
 ## 🚀 What is MCP Server?
