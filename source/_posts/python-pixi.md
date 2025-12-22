@@ -3,7 +3,7 @@ title: Python Pixi - Python Package Manager
 date: 2025-11-08 13:27:21
 categories: blogs
 tags:
-  - python
+  - Python
   - pixi
 toc: true
 layout: post

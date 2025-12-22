@@ -5,7 +5,6 @@ categories:
   - blogs
 tags:
   - JAX
-  - Python
   - AI
   - Machine Learning
 toc: true
