@@ -28,9 +28,19 @@ My Spider-Man gameplay series! Swinging through New York, taking down villains, 
 
 ---
 
-## 🦸 Episode 2 - Coming Soon
+## 🦸 Episode 2 - Collecting Spider Bots
 
-*More episodes coming soon!*
+<div class="video-container">
+    <iframe width="560" height="315" 
+        src="https://www.youtube.com/embed/RcSqwuNtV10" 
+        title="Spider-Man - Episode 2" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+        allowfullscreen>
+    </iframe>
+</div>
+
+---
 
 <!-- 
 To add more videos, copy this template:
