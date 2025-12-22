@@ -177,6 +177,7 @@ with tf.device('/CPU:0'):
 ```
 345 ms ± 8.91 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
 ```
+**Note**: All three frameworks have similar performance on CPU because they're all bound by CPU computational limits. The differences are minimal (~5% variation).
 
 ### GPU
 
@@ -228,6 +229,8 @@ if torch.cuda.is_available():
 12.8 ms ± 289 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 ```
 
+**Note**: GPU provides ~27x speedup compared to CPU (330ms → 12ms)! The frameworks are now GPU-bound rather than CPU-bound, and all perform similarly because they're all leveraging GPU hardware efficiently.
+
 ## TPU(Tensor Processing Units)
 
 - JAX Natively works on TPU.
@@ -273,6 +276,11 @@ x_jnp = jax.random.normal(key, (size, size)) # sits in TPU by default
 2.12 ms ± 45.3 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 ```
 
+**Speed Analysis (TPU):**
+- **TPU to CPU transfer**: 8.45 ms - When result is moved back to CPU
+- **TPU to TPU**: 2.12 ms - Lightning fast when computation stays on TPU!
+- **Key Insight**: TPU provides ~4x speedup compared to GPU (12.5ms → 2.12ms) when keeping data on the device. This is because TPUs are specifically designed for large matrix operations like the ones in deep learning. The ~156x speedup from CPU (330ms → 2.12ms) is astronomical! This is why TPUs are the preferred choice for large-scale training.
+
 ## More about JAX Now
 
 1. **JAX Arrays are immutable** - You cannot modify arrays in-place
@@ -301,6 +309,15 @@ def selu(x, alpha=1.67, lmbda=1.05):
 ```
 1.85 ms ± 42.1 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 ```
+
+**Speed Analysis (JIT Compilation):**
+- **Without JIT**: 15.2 ms - Regular function call with overhead
+- **With JIT**: 1.85 ms - After compilation, subsequent calls are cached
+- **Speedup**: ~8.2x faster! The JIT-compiled version is 8 times faster because:
+  - First call: JIT traces and compiles the function (slower)
+  - Subsequent calls: Uses the cached compiled version (much faster)
+  - No function call overhead, no Python interpretation, pure compiled code execution
+- **Takeaway**: Always use `@jax.jit` for functions that are called multiple times during training!
 
 ### How JIT Works: Tracing
 
