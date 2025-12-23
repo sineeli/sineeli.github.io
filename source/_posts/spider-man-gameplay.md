@@ -1,5 +1,5 @@
 ---
-title: Spider-Man Gameplay
+title: Spider-Man 2 Gameplay Series
 date: 2025-12-20 12:00:00
 categories: gaming
 tags:
