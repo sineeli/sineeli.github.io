@@ -287,8 +287,10 @@ Gradient descent has sequential dependencies: `W₀ → W₁ → W₂ → ...`
 **Problem with Python loops:** JAX traces them, unrolling causes slow compilation.
 
 **`jax.lax.scan` solves this:**
-- Compiles loop to efficient XLA primitives
 - Carries state (`W`) forward between iterations
+- How scan iterates: `lax.scan` iterates over the leading axis of the input, feeding one batch per step.
+- Expected data shape: `(num_batches, batch_size, num_features)`
+- Why use lax.scan: It replaces Python loops with a JAX-friendly loop that works well with jit and XLA.
 - Returns both final state and collected outputs
 
 ```python
@@ -296,7 +298,7 @@ def scan_fn(carry, inputs):
     W, step = carry           # State from previous iteration
     X_batch, y_batch = inputs # Current batch
     W_new = W - lr * gradient # Update weights
-    return (W_new, step+1), loss  # (new_carry, output)
+    return (W_new, step + 1), loss  # (new_carry, output)
 
 (W_final, _), losses = jax.lax.scan(scan_fn, (W_init, 0), (X_batches, y_batches))
 ```
@@ -731,7 +733,7 @@ sns.lineplot(lr.scheduler_progress)
 plt.show()
 ```
 
-<img src="lr.png" alt="Learning Rate Schedule" style="max-width:100%; width:800px; height:auto;" />
+<img src="lr-2.png" alt="Learning Rate Schedule" style="max-width:100%; width:800px; height:auto;" />
 
 ### Plot the loss for each epoch
 
