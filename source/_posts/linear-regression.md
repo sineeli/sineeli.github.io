@@ -9,6 +9,7 @@ tags:
   - AI
 categories:
   - blogs
+toc: true
 mathjax: true
 ---
 
