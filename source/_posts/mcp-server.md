@@ -1,5 +1,5 @@
 ---
-title: MCP Server - Part 1
+title: MCP Server
 date: 2025-12-20 10:00:00
 categories: blogs
 tags:

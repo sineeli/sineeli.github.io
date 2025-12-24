@@ -1,5 +1,5 @@
 ---
-title: 02 JAX Linear Regression from Scratch
+title: Linear Regression from Scratch using JAX
 date: 2025-12-23 22:25:05
 tags:
   - Machine-Learning

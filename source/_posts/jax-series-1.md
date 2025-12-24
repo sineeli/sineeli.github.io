@@ -1,5 +1,5 @@
 ---
-title: 01 JAX Basics - Framework Benchmarks & JIT Compilation
+title: JAX Basics - Framework Benchmarks & JIT Compilation
 date: 2025-12-20 20:51:06
 categories:
   - blogs
