@@ -99,6 +99,13 @@ coeff_features = jnp.hstack(coeff_features)
 y = random_bais + jnp.sum(coeff_features, axis=1) + jax.random.normal(noise_key, shape=(num_samples,))
 ```
 
+**Output:**
+```
+Random Bias: [-8]
+Random Coefficients: [ 5  5 -8 -2 -8]
+Y = -8 + 5 * X1 + 5 * X2 + -8 * X3 + -2 * X4 + -8 * X5
+```
+
 ---
 
 ## Method 1: The Normal Equation
@@ -250,6 +257,11 @@ for idx, coeff in enumerate(theta[1:]):
   predicted_eq += f" + {jnp.round(coeff, 1)} * X{idx+1}"
 
 print(predicted_eq)
+```
+
+**Output:**
+```
+Y_ = -8.0 + 5.0 * X1 + 5.0 * X2 + -8.0 * X3 + -2.0 * X4 + -8.0 * X5
 ```
 
 ---
@@ -580,6 +592,17 @@ for idx, coeff in enumerate(lr.W[1:, 0]):
   predicted_eq += f" + {jnp.round(coeff, 1)} * X{idx+1}"
 
 print(predicted_eq)
+```
+
+**Output:**
+```
+Epoch 1: Loss 12.492534
+Epoch 2: Loss 1.391944
+Epoch 3: Loss 1.054662
+Epoch 4: Loss 1.020378
+Epoch 5: Loss 0.999142
+
+Y_ = -8.0 + 5.0 * X1 + 5.0 * X2 + -8.0 * X3 + -2.0 * X4 + -8.0 * X5
 ```
 
 ---
