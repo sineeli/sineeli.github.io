@@ -116,8 +116,16 @@ $navbar-item-margin-h ?= 0
             background-color: transparent
 
 .navbar-logo
+    padding-top: $navbar-item-padding-v
+    padding-bottom: $navbar-item-padding-v
+
     img
         max-height: $logo-height
+        height: 2.5rem
+        width: 2.5rem
+        object-fit: cover
+        border-radius: 50%
+        box-shadow: 0 0 0 2px rgba(127, 127, 127, 0.18)
 
 @media screen and (min-width: $desktop)
     .navbar > .container .navbar-menu, .container > .navbar .navbar-menu
