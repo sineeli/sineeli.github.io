@@ -107,6 +107,7 @@ navbar:
     menu:
         Home: /
         Blogs: /blogs
+        Reading: /reading
         Gaming: /gaming
         Photography: /photography
         Categories: /categories
