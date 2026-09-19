@@ -1,24 +1,14 @@
-const createLogger = require('hexo-log');
 const { Component } = require('inferno');
-const view = require('hexo-component-inferno/lib/core/view');
+const SimpleShare = require('../share/simple');
 
-const logger = createLogger.default();
-
+// Self-hosted share buttons (see ../share/simple.jsx) are always used instead
+// of the config-driven third-party widgets (AddToAny, ShareThis, etc.), which
+// depend on an external script that ad blockers commonly block, leaving
+// empty placeholder boxes in the article footer.
 module.exports = class extends Component {
     render() {
         const { config, page, helper } = this.props;
-        const { share } = config;
-        if (!share || typeof share.type !== 'string') {
-            return null;
-        }
-
-        try {
-            let Share = view.require('share/' + share.type);
-            Share = Share.Cacheable ? Share.Cacheable : Share;
-            return <Share config={config} page={page} helper={helper} share={share} />;
-        } catch (e) {
-            logger.w(`Icarus cannot load share button "${share.type}"`);
-            return null;
-        }
+        const Share = SimpleShare.Cacheable;
+        return <Share config={config} page={page} helper={helper} />;
     }
 };
