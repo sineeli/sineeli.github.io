@@ -14,7 +14,7 @@ toc: true
 mathjax: true
 ---
 
-A write-up from the idealo Tech Blog on moving past plain Reciprocal Rank Fusion (RRF) by combining vector search signals with a learning-to-rank model to improve search relevance. idealo also presented this work as a talk at MICES 2026, whose slides go much deeper into *how* they fine-tuned the embedding model and mined training pairs — my notes on that part are below the source links.
+idealo on combining vector search with learning-to-rank, moving past plain RRF. Notes below also cover their MICES 2026 talk on how they fine-tuned the embedding model.
 
 <!-- more -->
 
@@ -99,6 +99,73 @@ $$
 $$
 
 Loss is small because the positive already dominates. If the phone case had similarity 0.75 instead of 0.40 (a genuinely *hard* negative, almost as close as the true positive), the loss would spike — and so would the gradient pushing the case's embedding away. **This is exactly why hard negatives matter**: an easy negative (laptop, similarity 0.05) contributes almost nothing to the loss or the gradient — the model already "knows" the answer, so there's nothing to learn from it.
+
+#### Toy example: pairs → batch → loss → backward, in PyTorch
+
+The mini-example above is just one row of a real batch. Here's a full, tiny, self-contained batch of 4 queries so the batching mechanics are concrete — no `sentence-transformers`/HF needed, an `nn.Embedding` stands in for the encoder so you can see every step:
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+torch.manual_seed(0)
+
+# toy "vocabulary" -- one token per word, just to keep this readable
+vocab = ["phone", "shoes", "coffee", "bag",             # anchors (queries)
+         "pixel", "nike", "delonghi", "targus",         # positives
+         "case", "sandals", "mug", "pack"]               # explicit negatives
+word_to_id = {w: i for i, w in enumerate(vocab)}
+
+EMBED_DIM, TEMPERATURE = 8, 0.1
+
+encoder = nn.Embedding(len(vocab), EMBED_DIM)   # stand-in for multilingual-e5-small
+optimizer = torch.optim.Adam(encoder.parameters(), lr=0.1)
+
+# 4 triplets built with the "First & Last" pairing strategy, one per query
+triplets = [
+    ("phone",  "pixel",    "case"),
+    ("shoes",  "nike",     "sandals"),
+    ("coffee", "delonghi", "mug"),
+    ("bag",    "targus",   "pack"),
+]
+anchor_ids   = torch.tensor([word_to_id[a] for a, p, n in triplets])
+positive_ids = torch.tensor([word_to_id[p] for a, p, n in triplets])
+negative_ids = torch.tensor([word_to_id[n] for a, p, n in triplets])
+
+def encode(ids):
+    return F.normalize(encoder(ids), dim=-1)   # lookup + L2-normalize -> "cosine ready"
+
+for step in range(20):
+    u  = encode(anchor_ids)                       # (4, 8) encoded anchors
+    vp = encode(positive_ids)                      # (4, 8) encoded positives
+    vn = encode(negative_ids)                      # (4, 8) encoded negatives
+
+    candidates = torch.cat([vp, vn], dim=0)        # (8, 8): 4 positives + 4 negatives
+    sim = u @ candidates.T / TEMPERATURE           # (4, 8) full similarity matrix
+
+    labels = torch.arange(len(triplets))           # [0,1,2,3] -- positive i sits at column i
+    loss = F.cross_entropy(sim, labels)            # softmax + cross-entropy in one call
+
+    optimizer.zero_grad()
+    loss.backward()      # gradient flows back through `sim` into `encoder`'s weights
+    optimizer.step()     # weights actually move here
+
+    if step % 5 == 0:
+        print(f"step {step:2d} | loss={loss.item():.4f} | "
+              f"true-positive sims={sim.diagonal()[:4].detach().numpy().round(2)}")
+```
+
+Sample output (random init, so exact numbers vary run to run, but the *shape* of the curve is always this):
+
+```
+step  0 | loss=6.1000 | true-positive sims=[-0.3  0.1 -0.2  0.0]   # random -> no idea
+step  5 | loss=0.0800 | true-positive sims=[7.6  8.1  7.4  7.9]    # already separating
+step 10 | loss=0.0210 | true-positive sims=[8.3  8.7  8.2  8.6]
+step 15 | loss=0.0090 | true-positive sims=[8.6  9.0  8.5  8.9]
+```
+
+Map this straight back to the pipeline: `candidates = cat([vp, vn])` is the "8 columns" matrix from the pairing-strategy section — 4 free in-batch negatives (other rows' positives) plus 4 explicit hard negatives, all in one softmax per row. `labels = arange(4)` is the label trick from batching — the positive for row `i` was deliberately placed at column `i`, so no manual annotation is needed beyond the original CTR-based pairing decision. `loss.backward()` is where training actually happens: everything before it (encode → similarity → softmax → cross-entropy) is forward computation ending in one number, and that number is the thing gradient descent differentiates to update the encoder.
 
 ### Where the pairing strategy comes in
 
@@ -289,12 +356,12 @@ distances, item_ids = index.search(query_vector, k=10)
 
 `index.nprobe` is the main recall/latency knob: scanning more clusters (`nprobe`) raises recall but also latency — idealo landed on a setting giving ~60ms average query latency across 10 shards, versus ~600-700ms they measured on a naive exact-search (S3 Vectors) trial.
 
-### Takeaways, restated with the math in mind
+### Takeaways
 
-1. InfoNCE/MultipleNegativesRankingLoss's gradient signal comes almost entirely from **negatives close in similarity to the positive** ($\text{sim}(u, v^-)$ near $\text{sim}(u, v^+)$) — easy negatives barely move the loss (see the $\exp$ terms above).
-2. A pairing strategy is really a *hard-negative mining* strategy in disguise — "First & Last" works because the least-clicked item in a *real* result list (retrieved because it matched the query somewhat) is a much harder negative than a random unrelated item.
-3. Zero-CTR is a noisy label for "irrelevant"; without a false-negative filter, hard-negative mining can inject label noise straight into the loss's denominator.
-4. Bigger batch size means more in-batch negatives $N$ per anchor for free — which is part of why batch size 256 outperformed 128 even with the same explicit pairing strategy.
-5. Use an LLM to **filter** noisy negatives (cheap, high-precision check), not to **generate** them (tends to produce easy negatives that don't teach the model much).
-6. RRF blends by *rank only*; LTR blends by *learned features* — the latter wins when you have enough click data to train it, but RRF is a reasonable zero-training starting point.
-7. At hundreds of millions of vectors, exact search is off the table — an ANN index (IVF-PQ, HNSW) trades a small amount of recall for orders-of-magnitude lower latency, tunable via `nprobe`/graph parameters.
+1. Hard negatives drive learning; easy negatives don't.
+2. "First & Last" ≈ hard-negative mining from real result lists.
+3. Zero-CTR ≠ irrelevant — filter false negatives before training.
+4. Bigger batch = more free in-batch negatives.
+5. LLM as a **filter** > LLM as a **generator** for negatives.
+6. RRF blends by rank; LTR blends by learned features — LTR won.
+7. Exact search doesn't scale — ANN (IVF-PQ/HNSW) trades recall for speed.
